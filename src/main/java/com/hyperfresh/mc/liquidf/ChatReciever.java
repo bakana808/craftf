@@ -15,9 +15,9 @@ public interface ChatReciever
 	 * For an example on what to put in this method,
 	 * visit this link: <a href="https://gist.github.com/Dinnerbone/5631634">https://gist.github.com/Dinnerbone/5631634</a>
 	 *
-	 * @param json
+	 * @param lines
 	 */
-	public void sendJSONMessage(String json);
+	public void sendJSONMessage(String... lines);
 
 	/**
 	 * Returns if this ChatReciever supports the JSON format.
