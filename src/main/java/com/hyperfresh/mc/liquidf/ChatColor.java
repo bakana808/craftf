@@ -1,4 +1,4 @@
-package com.octopod.util.minecraft.chat;
+package com.hyperfresh.mc.liquidf;
 
 import java.util.HashMap;
 import java.util.Map;

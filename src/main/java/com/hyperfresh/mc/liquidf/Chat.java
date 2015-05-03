@@ -1,4 +1,4 @@
-package com.octopod.util.minecraft.chat;
+package com.hyperchat.mc.liquidchat;
 
 import org.json.simple.JSONValue;
 

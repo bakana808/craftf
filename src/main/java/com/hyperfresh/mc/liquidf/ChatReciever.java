@@ -1,4 +1,4 @@
-package com.octopod.util.minecraft.chat;
+package com.hyperfresh.mc.liquidf;
 
 public interface ChatReciever
 {

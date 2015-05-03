@@ -1,4 +1,4 @@
-package com.octopod.util.minecraft.chat;
+package com.hyperfresh.mc.liquidf;
 
 import java.util.ArrayList;
 import java.util.List;

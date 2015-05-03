@@ -1,4 +1,4 @@
-package com.octopod.util.minecraft.chat;
+package com.hyperfresh.mc.liquidf;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -35,7 +35,7 @@ public class ChatElement
 	{
 		this.text = text;
 	}
-	
+
 	public ChatElement(String text, ChatColor color, ChatFormat... formats)
 	{
 		this.text = text;
@@ -55,13 +55,13 @@ public class ChatElement
 	private String text = "";
 	private boolean translate = false;
 	private List<String> with = null;
-	
+
 	private ChatColor color = null;
 	private ChatFormat[] formats = {};
-	
+
 	private ChatClickEvent click = null;
 	private String click_value = null;
-	
+
 	private ChatHoverEvent hover = null;
 	private String hover_value = null;
 
@@ -82,7 +82,7 @@ public class ChatElement
 			hover == null &&
 			extras.size() == 0;
 	}
-	
+
 	//Variable getters
 	public ChatClickEvent 	getClick() 		{return click;}
 	public ChatHoverEvent 	getHover() 		{return hover;}
@@ -150,7 +150,7 @@ public class ChatElement
 	 *
 	 * @param text the text of the element
 	 * @param translate whether to translate the text or not
-	 */		
+	 */
 	public ChatElement setText(String text, boolean translate)
 	{
 		this.text = text;

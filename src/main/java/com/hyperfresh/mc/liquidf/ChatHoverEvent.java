@@ -1,4 +1,4 @@
-package com.octopod.util.minecraft.chat;
+package com.hyperfresh.mc.liquidf;
 
 /**
  * @author Octopod - octopodsquad@gmail.com
