@@ -82,6 +82,6 @@ new ChatElement().append("Text").block(100, ChatAlignment.LEFT).send(player);
 
 [dl]: https://github.com/hyperfresh/mc-liquidf/releases/latest
 
-[irc-badge]: https://img.shields.io/badge/irc-join%20chat-brightgreen.svg
+[irc-badge]: https://img.shields.io/badge/irc-join%20chat-brightgreen.svg?style=flat-square
 
 [irc]: https://webchat.esper.net/?channels=hyperfresh
