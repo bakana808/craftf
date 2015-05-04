@@ -1,4 +1,4 @@
-LiquidF [![Build Status][1]][2]
+LiquidF [ ![Build Status][build-badge] ][build] [ ![Downloads][dl-badge] ][dl] [ ![Join IRC][irc-badge] ][irc]
 ======
 #####a minecraft chat formatter that supports format codes, JSON features, and pseudo-tabs
 
@@ -74,8 +74,14 @@ Creating aligned text (with a width of 100 and LEFT alignment):
 new ChatElement().append("Text").block(100, ChatAlignment.LEFT).send(player);
 ```
 
-<!--- build status badge --->
-[1]: https://img.shields.io/travis/liquidf/mc-liquidf.svg?style=flat-square
+[build-badge]: https://img.shields.io/travis/hyperfresh/mc-liquidf.svg?style=flat-square
 
-<!--- travis link --->
-[2]: https://travis-ci.org/hyperfresh/mc-liquidf
+[build]: https://travis-ci.org/hyperfresh/mc-liquidf
+
+[dl-badge]: https://img.shields.io/github/downloads/hyperfresh/mc-liquidf/latest/total.svg?style=flat-square
+
+[dl]: https://github.com/hyperfresh/mc-liquidf/releases/latest
+
+[irc-badge]: https://img.shields.io/badge/irc-join%20chat-brightgreen.svg
+
+[irc]: https://webchat.esper.net/?channels=hyperfresh
