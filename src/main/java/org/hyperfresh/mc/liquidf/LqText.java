@@ -1,6 +1,6 @@
-package com.hyperfresh.mc.liquidf;
+package org.hyperfresh.mc.liquidf;
 
-import com.hyperfresh.mc.liquidf.enums.*;
+import org.hyperfresh.mc.liquidf.enums.*;
 
 /**
  * @author octopod

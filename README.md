@@ -13,7 +13,7 @@ Sending a formatted message directly to a player requires that you wrap a Minecr
 
 An example, in Bukkit (v1.7):
 ```java
-import com.hyperfresh.mc.liquidf.ChatReciever;
+import ChatReciever;
 import net.minecraft.server.v1_7_R4.ChatSerializer;
 import net.minecraft.server.v1_7_R4.PacketPlayOutChat;
 import org.bukkit.entity.Player;

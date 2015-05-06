@@ -1,7 +1,7 @@
-package com.hyperfresh.mc.liquidf;
+package org.hyperfresh.mc.liquidf;
 
-import com.hyperfresh.mc.liquidf.enums.*;
 import org.apache.commons.lang.StringUtils;
+import org.hyperfresh.mc.liquidf.enums.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package com.hyperfresh.mc.liquidf.enums;
+package org.hyperfresh.mc.liquidf.enums;
 
 /**
  * Created by Branden on 5/4/2015.

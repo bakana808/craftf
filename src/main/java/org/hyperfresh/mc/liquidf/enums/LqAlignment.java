@@ -1,4 +1,4 @@
-package com.hyperfresh.mc.liquidf.enums;
+package org.hyperfresh.mc.liquidf.enums;
 
 /**
  * @author Octopod - octopodsquad@gmail.com

@@ -1,4 +1,4 @@
-package com.hyperfresh.mc.liquidf;
+package org.hyperfresh.mc.liquidf;
 
 import java.util.ArrayList;
 import java.util.List;

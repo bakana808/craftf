@@ -1,7 +1,7 @@
-package com.hyperfresh.mc.liquidf;
+package org.hyperfresh.mc.liquidf;
 
-import com.hyperfresh.mc.liquidf.enums.LqColor;
-import com.hyperfresh.mc.liquidf.enums.LqFormat;
+import org.hyperfresh.mc.liquidf.enums.LqColor;
+import org.hyperfresh.mc.liquidf.enums.LqFormat;
 
 /**
  * @author octopod

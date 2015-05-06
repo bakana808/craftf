@@ -1,4 +1,4 @@
-package com.hyperfresh.mc.liquidf.enums;
+package org.hyperfresh.mc.liquidf.enums;
 
 import java.util.HashMap;
 import java.util.Map;
