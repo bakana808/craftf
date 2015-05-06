@@ -1,9 +1,9 @@
-package com.hyperfresh.mc.liquidf;
+package com.hyperfresh.mc.liquidf.enums;
 
 /**
  * @author Octopod - octopodsquad@gmail.com
  */
-public enum ChatClickEvent
+public enum LqClickEvent
 {
 	OPEN_URL,
 	OPEN_FILE,

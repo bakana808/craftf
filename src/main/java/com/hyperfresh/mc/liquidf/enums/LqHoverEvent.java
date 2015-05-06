@@ -1,9 +1,9 @@
-package com.hyperfresh.mc.liquidf;
+package com.hyperfresh.mc.liquidf.enums;
 
 /**
  * @author Octopod - octopodsquad@gmail.com
  */
-public enum ChatHoverEvent
+public enum LqHoverEvent
 {
 	SHOW_TEXT,
 	SHOW_ACHIEVEMENT,

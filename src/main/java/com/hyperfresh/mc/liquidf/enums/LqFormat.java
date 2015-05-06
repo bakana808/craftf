@@ -1,4 +1,4 @@
-package com.hyperfresh.mc.liquidf;
+package com.hyperfresh.mc.liquidf.enums;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @author Octopod - octopodsquad@gmail.com
  */
-public enum ChatFormat
+public enum LqFormat
 {
 	OBFUSCATED('k'),
 	BOLD('l'),
@@ -15,16 +15,18 @@ public enum ChatFormat
 	ITALIC('o'),
 	RESET('r');
 
+	public static LqFormat[] NO_FORMATS = new LqFormat[0];
+
 	Character character = null;
 
-	private static Map<Character, ChatFormat> map = new HashMap<>();
+	private static Map<Character, LqFormat> map = new HashMap<>();
 
 	static
 	{
-		for(ChatFormat f: values()) map.put(f.character, f);
+		for(LqFormat f: values()) map.put(f.character, f);
 	}
 
-	private ChatFormat(char c)
+	private LqFormat(char c)
 	{
 		character = c;
 	}
@@ -34,7 +36,7 @@ public enum ChatFormat
 		return character;
 	}
 
-	static public ChatFormat fromChar(char c)
+	static public LqFormat fromChar(char c)
 	{
 		return map.get(c);
 	}

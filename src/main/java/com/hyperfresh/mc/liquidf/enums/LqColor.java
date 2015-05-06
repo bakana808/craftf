@@ -1,4 +1,4 @@
-package com.hyperfresh.mc.liquidf;
+package com.hyperfresh.mc.liquidf.enums;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @author Octopod - octopodsquad@gmail.com
  */
-public enum ChatColor
+public enum LqColor
 {
 	BLACK('0'),
 	DARK_BLUE('1'),
@@ -27,14 +27,14 @@ public enum ChatColor
 
 	Character character = null;
 
-	private static Map<Character, ChatColor> map = new HashMap<>();
+	private static Map<Character, LqColor> map = new HashMap<>();
 
 	static
 	{
-		for(ChatColor c: values()) map.put(c.character, c);
+		for(LqColor c: values()) map.put(c.character, c);
 	}
 
-	private ChatColor(char c)
+	private LqColor(char c)
 	{
 		character = c;
 	}
@@ -44,7 +44,7 @@ public enum ChatColor
 		return character;
 	}
 
-	static public ChatColor fromChar(char c)
+	static public LqColor fromChar(char c)
 	{
 		return map.get(c);
 	}

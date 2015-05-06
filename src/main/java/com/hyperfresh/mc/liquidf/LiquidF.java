@@ -1,15 +1,18 @@
-package com.hyperchat.mc.liquidchat;
+package com.hyperfresh.mc.liquidf;
+
+import com.hyperfresh.mc.liquidf.enums.LqAlignment;
+import com.hyperfresh.mc.liquidf.enums.LqColor;
+import com.hyperfresh.mc.liquidf.enums.LqFormat;
 
 import org.json.simple.JSONValue;
 
 import java.util.*;
 
 /**
- * Last Updated: 2.15.2014
- * Chat that provide tools relating to MC's chat and Chat Libraries.
+ * LiquidF static utilities
  * @author Octopod
  */
-public class Chat
+public class LiquidF
 {
 	/**
 	 * Map of all specific character widths other than 6, which most of the characters have.
@@ -81,7 +84,7 @@ public class Chat
 			{
 				if(isCode)
 				{
-					if(bolded && ChatColor.fromChar(character) != null)
+					if(bolded && LqColor.fromChar(character) != null)
 					{
 						bolded = false;
 					}
@@ -120,7 +123,7 @@ public class Chat
 	/**
 	 * Converts a ChatBuilder object to Minecraft legacy chat string.
 	 * Obviously, hover and click events won't carry over.
-	 * @param builder The ChatBuilder object to convert
+	 * @param elements The ChatBuilder object to convert
 	 * @return The legacy chat string.
 	 */
     public static String toLegacyString(ChatElement... elements)
@@ -143,7 +146,7 @@ public class Chat
 		{
 			sb.append(element.getColor());
 		}
-		for(ChatFormat format: element.getFormats())
+		for(LqFormat format: element.getFormats())
 		{
 			sb.append(format);
 		}
@@ -158,7 +161,7 @@ public class Chat
 			{
 				sb.append(extra.getColor());
 			}
-			for(ChatFormat format: extra.getFormats())
+			for(LqFormat format: extra.getFormats())
 			{
 				sb.append(format);
 			}
@@ -185,8 +188,8 @@ public class Chat
 
 		StringBuilder text = new StringBuilder();
 		boolean nextIsColorCode = false;
-		ChatColor lastColor = ChatColor.WHITE;
-		List<ChatFormat> formats = new ArrayList<>();
+		LqColor lastColor = LqColor.WHITE;
+		List<LqFormat> formats = new ArrayList<>();
 
 		for(char c: message.toCharArray()) {
 
@@ -197,12 +200,12 @@ public class Chat
 
 			if(nextIsColorCode) {
 				nextIsColorCode = false;
-				ChatColor color = ChatColor.fromChar(c);
-				ChatFormat format = ChatFormat.fromChar(c);
+				LqColor color = LqColor.fromChar(c);
+				LqFormat format = LqFormat.fromChar(c);
 				if(color != null && format == null) { //This is a color
 					//Push new element
 					if(!text.toString().equals("")) {
-						cb.append(text.toString()).color(lastColor).format(formats.toArray(new ChatFormat[formats.size()]));
+						cb.append(text.toString()).color(lastColor).format(formats.toArray(new LqFormat[formats.size()]));
 					}
 					//Reset variables
 					text = new StringBuilder();
@@ -218,7 +221,7 @@ public class Chat
 
 		}
 
-		cb.append(text.toString()).color(lastColor).format(formats.toArray(new ChatFormat[formats.size()]));
+		cb.append(text.toString()).color(lastColor).format(formats.toArray(new LqFormat[formats.size()]));
 
 		return cb;
 	}
@@ -326,9 +329,9 @@ public class Chat
 	 * @param renderer The interface that this method will use to build the return object.
 	 * @return The setText fitted to toWidth.
 	 */
-    static private <T> T block(String text, int toWidth, ChatAlignment alignment, char fillerChar, boolean precise, BlockRenderer<T> renderer)
+    static private <T> T block(String text, int toWidth, LqAlignment alignment, char fillerChar, boolean precise, BlockRenderer<T> renderer)
 	{
-        String cutText = cut(text, toWidth)[0] + ChatFormat.RESET;
+        String cutText = cut(text, toWidth)[0] + LqFormat.RESET;
 
         //The total width (in pixels) needed to fill
         final int totalFillerWidth = toWidth - width(cutText);
@@ -349,7 +352,7 @@ public class Chat
         		lFillerWidth = (int)Math.floor(totalFillerWidth / 2.0);
         		rFillerWidth = (int)Math.ceil(totalFillerWidth / 2.0);
 				break;
-			case CENTER_CEILING:
+			case CENTER_CEIL:
 				lFillerWidth = (int)Math.ceil(totalFillerWidth / 2.0);
 				rFillerWidth = (int)Math.floor(totalFillerWidth / 2.0);
                 break;
@@ -358,37 +361,37 @@ public class Chat
        return renderer.render(filler(lFillerWidth, precise, fillerChar, FILLER_RENDERER_STRING), cutText, filler(rFillerWidth, precise, fillerChar, FILLER_RENDERER_STRING));
     }
 
-    static public String blockString(String text, int toWidth, ChatAlignment alignment)
+    static public String blockString(String text, int toWidth, LqAlignment alignment)
 	{
     	return blockString(text, toWidth, alignment, ' ', true);
     }
 
-    static public String blockString(String text, int toWidth, ChatAlignment alignment, char fillerChar, boolean precise)
+    static public String blockString(String text, int toWidth, LqAlignment alignment, char fillerChar, boolean precise)
 	{
         return block(text, toWidth, alignment, fillerChar, precise, BLOCK_RENDERER_STRING);
     }
 
-	static public ChatElement block(String text, int toWidth, ChatAlignment alignment)
+	static public ChatElement block(String text, int toWidth, LqAlignment alignment)
 	{
 		return block(text, toWidth, alignment, ' ', true);
 	}
 
-	static public ChatElement block(String text, int toWidth, ChatAlignment alignment, char fillerChar, boolean precise)
+	static public ChatElement block(String text, int toWidth, LqAlignment alignment, char fillerChar, boolean precise)
 	{
 		return block(text, toWidth, alignment, fillerChar, precise, BLOCK_RENDERER_CHAT);
 	}
 
-    static public ChatElement block(ChatElement element, int toWidth, ChatAlignment alignment)
+    static public ChatElement block(ChatElement element, int toWidth, LqAlignment alignment)
 	{
     	return block(element, toWidth, alignment, ' ', true);
     }
 
-    static public ChatElement block(ChatElement element, int toWidth, ChatAlignment alignment, char fillerChar, boolean precise)
+    static public ChatElement block(ChatElement element, int toWidth, LqAlignment alignment, char fillerChar, boolean precise)
 	{
         return block(toLegacyString(element), toWidth, alignment, fillerChar, precise, BLOCK_RENDERER_CHAT);
     }
 
-    final static ChatColor FILLER_COLOR = ChatColor.DARK_GRAY;
+    final static LqColor FILLER_COLOR = LqColor.DARK_GRAY;
 
     public final static String FILLER_2PX_RAW = FILLER_COLOR + "\u2019";
 	public final static ChatElement FILLER_2PX = new ChatElement(FILLER_2PX_RAW);
@@ -421,7 +424,7 @@ public class Chat
             case 5:
                 if(customFillerWidth == 5) {filler.append(customFiller); break;}
 				// Use a bolded space (4px + 1px)
-                filler.append(ChatFormat.BOLD).append(' ').append(ChatFormat.RESET);
+                filler.append(LqFormat.BOLD).append(' ').append(LqFormat.RESET);
                 break;
             case 4:
                 if(customFillerWidth == 4) {filler.append(customFiller); break;}
@@ -432,13 +435,13 @@ public class Chat
                 if(customFillerWidth == 3) {filler.append(customFiller); break;}
                 if(!precise) break;
 				// Use the bolded 2px filler (2px + 1px)
-                filler.append(FILLER_COLOR).append(ChatFormat.BOLD).append(FILLER_2PX_RAW).append(ChatFormat.RESET);
+                filler.append(FILLER_COLOR).append(LqFormat.BOLD).append(FILLER_2PX_RAW).append(LqFormat.RESET);
                 break;
             case 2:
                 if(customFillerWidth == 2) {filler.append(customFiller); break;}
                 if(!precise) break;
 				// Use the 2px filler
-                filler.append(FILLER_COLOR).append(FILLER_2PX_RAW).append(ChatFormat.RESET);
+                filler.append(FILLER_COLOR).append(FILLER_2PX_RAW).append(LqFormat.RESET);
                 break;
         }
 
@@ -552,7 +555,7 @@ public class Chat
 			json.put("hoverEvent", hover);
 		}
 
-		for(ChatFormat format: element.getFormats())
+		for(LqFormat format: element.getFormats())
 		{
 			json.put(format.name().toLowerCase(), true);
 		}

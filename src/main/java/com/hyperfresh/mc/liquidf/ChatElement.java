@@ -1,5 +1,6 @@
 package com.hyperfresh.mc.liquidf;
 
+import com.hyperfresh.mc.liquidf.enums.*;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
@@ -20,12 +21,12 @@ public class ChatElement
 
 	}
 
-	public ChatElement(ChatColor color)
+	public ChatElement(LqColor color)
 	{
 		this.color = color;
 	}
 
-	public ChatElement(ChatColor color, ChatFormat... formats)
+	public ChatElement(LqColor color, LqFormat... formats)
 	{
 		this.color = color;
 		this.formats = formats;
@@ -36,14 +37,14 @@ public class ChatElement
 		this.text = text;
 	}
 
-	public ChatElement(String text, ChatColor color, ChatFormat... formats)
+	public ChatElement(String text, LqColor color, LqFormat... formats)
 	{
 		this.text = text;
 		this.color = color;
 		this.formats = formats;
 	}
 
-	public ChatElement(String text, ChatColor color, ChatClickEvent click, ChatHoverEvent hover, ChatFormat... formats)
+	public ChatElement(String text, LqColor color, LqClickEvent click, LqHoverEvent hover, LqFormat... formats)
 	{
 		this.text = text;
 		this.color = color;
@@ -56,13 +57,13 @@ public class ChatElement
 	private boolean translate = false;
 	private List<String> with = null;
 
-	private ChatColor color = null;
-	private ChatFormat[] formats = {};
+	private LqColor color = null;
+	private LqFormat[] formats = {};
 
-	private ChatClickEvent click = null;
+	private LqClickEvent click = null;
 	private String click_value = null;
 
-	private ChatHoverEvent hover = null;
+	private LqHoverEvent hover = null;
 	private String hover_value = null;
 
 	private List<ChatElement> extras = new ArrayList<>();
@@ -84,13 +85,13 @@ public class ChatElement
 	}
 
 	//Variable getters
-	public ChatClickEvent 	getClick() 		{return click;}
-	public ChatHoverEvent 	getHover() 		{return hover;}
+	public LqClickEvent getClick() 		{return click;}
+	public LqHoverEvent getHover() 		{return hover;}
 	public String 			getClickValue() {return click_value == null ? "" : click_value;}
 	public String 			getHoverValue() {return hover_value == null ? "" : hover_value;}
 	public String 			getText() 		{return text;}
-	public ChatColor 		getColor() 		{return color;}
-	public ChatFormat[] 	getFormats() 	{return formats;}
+	public LqColor getColor() 		{return color;}
+	public LqFormat[] 	getFormats() 	{return formats;}
 	public boolean			getTranslate() {return translate;}
 	public List<String> 	getTranslateWith() {return with;}
 
@@ -164,7 +165,7 @@ public class ChatElement
 	 *
 	 * @param color the color of the element
 	 */
-	public ChatElement setColor(ChatColor color)
+	public ChatElement setColor(LqColor color)
 	{
 		this.color = color;
 		return this;
@@ -175,7 +176,7 @@ public class ChatElement
 	 *
 	 * @param color the color of the element
 	 */
-	public ChatElement color(ChatColor color)
+	public ChatElement color(LqColor color)
 	{
 		selection.setColor(color);
 		return this;
@@ -187,7 +188,7 @@ public class ChatElement
 	 *
 	 * @param formats the formats of the element
 	 */
-	public ChatElement setFormat(ChatFormat... formats)
+	public ChatElement setFormat(LqFormat... formats)
 	{
 		this.formats = formats;
 		return this;
@@ -198,21 +199,21 @@ public class ChatElement
 	 *
 	 * @param formats the formats of the element
 	 */
-	public ChatElement format(ChatFormat... formats)
+	public ChatElement format(LqFormat... formats)
 	{
 		selection.formats = formats;
 		return this;
 	}
 
-	public ChatElement bold() {return format(ChatFormat.BOLD);}
+	public ChatElement bold() {return format(LqFormat.BOLD);}
 
-	public ChatElement italic() {return format(ChatFormat.ITALIC);}
+	public ChatElement italic() {return format(LqFormat.ITALIC);}
 
-	public ChatElement underline() {return format(ChatFormat.UNDERLINED);}
+	public ChatElement underline() {return format(LqFormat.UNDERLINED);}
 
-	public ChatElement strikethrough() {return format(ChatFormat.STRIKETHROUGH);}
+	public ChatElement strikethrough() {return format(LqFormat.STRIKETHROUGH);}
 
-	public ChatElement obfuscate() {return format(ChatFormat.OBFUSCATED);}
+	public ChatElement obfuscate() {return format(LqFormat.OBFUSCATED);}
 
 	/**
 	 * Sets the click event of this element.
@@ -220,7 +221,7 @@ public class ChatElement
 	 * @param click the click event
 	 * @param value the value of the event
 	 */
-	public ChatElement setClick(ChatClickEvent click, String value)
+	public ChatElement setClick(LqClickEvent click, String value)
 	{
 		this.click = click;
 		this.click_value = value;
@@ -233,7 +234,7 @@ public class ChatElement
 	 * @param click the click event
 	 * @param value the value of the event
 	 */
-	public ChatElement click(ChatClickEvent click, String value)
+	public ChatElement click(LqClickEvent click, String value)
 	{
 		selection.click = click;
 		selection.click_value = value;
@@ -242,22 +243,22 @@ public class ChatElement
 
 	public ChatElement run(String command)
 	{
-		return click(ChatClickEvent.RUN_COMMAND, command);
+		return click(LqClickEvent.RUN_COMMAND, command);
 	}
 
 	public ChatElement suggest(String command)
 	{
-		return click(ChatClickEvent.SUGGEST_COMMAND, command);
+		return click(LqClickEvent.SUGGEST_COMMAND, command);
 	}
 
 	public ChatElement link(String url)
 	{
-		return click(ChatClickEvent.OPEN_URL, url);
+		return click(LqClickEvent.OPEN_URL, url);
 	}
 
 	public ChatElement file(String path)
 	{
-		return click(ChatClickEvent.OPEN_FILE, path);
+		return click(LqClickEvent.OPEN_FILE, path);
 	}
 
 	/**
@@ -266,7 +267,7 @@ public class ChatElement
 	 * @param hover the hover event
 	 * @param value the value of the event
 	 */
-	public ChatElement setHover(ChatHoverEvent hover, String value)
+	public ChatElement setHover(LqHoverEvent hover, String value)
 	{
 		this.hover = hover;
 		this.hover_value = value;
@@ -279,7 +280,7 @@ public class ChatElement
 	 * @param hover the hover event
 	 * @param value the value of the event
 	 */
-	public ChatElement hover(ChatHoverEvent hover, String value)
+	public ChatElement hover(LqHoverEvent hover, String value)
 	{
 		selection.hover = hover;
 		selection.hover_value = value;
@@ -288,22 +289,22 @@ public class ChatElement
 
 	public ChatElement tooltip(String... lines)
 	{
-		return hover(ChatHoverEvent.SHOW_TEXT, StringUtils.join(lines, "\n"));
+		return hover(LqHoverEvent.SHOW_TEXT, StringUtils.join(lines, "\n"));
 	}
 
 	public ChatElement tooltip(ChatElement element)
 	{
-		return hover(ChatHoverEvent.SHOW_TEXT, element.toLegacyString());
+		return hover(LqHoverEvent.SHOW_TEXT, element.toLegacyString());
 	}
 
 	public ChatElement achievement(String name)
 	{
-		return hover(ChatHoverEvent.SHOW_ACHIEVEMENT, name);
+		return hover(LqHoverEvent.SHOW_ACHIEVEMENT, name);
 	}
 
 	public ChatElement item(String json)
 	{
-		return hover(ChatHoverEvent.SHOW_ITEM, json);
+		return hover(LqHoverEvent.SHOW_ITEM, json);
 	}
 
 	/**
@@ -434,7 +435,7 @@ public class ChatElement
 		}
 	}
 
-	public ChatElement appendif(boolean b, String text, ChatColor color, ChatFormat... formats)
+	public ChatElement appendif(boolean b, String text, LqColor color, LqFormat... formats)
 	{
 		if(b) append(text, color, formats);
 		return this;
@@ -451,7 +452,7 @@ public class ChatElement
 	 *
 	 * @param text the text to append
 	 */
-	public ChatElement sappend(String text, ChatColor color, ChatFormat... formats)
+	public ChatElement sappend(String text, LqColor color, LqFormat... formats)
 	{
 		push(new ChatElement(" "), new ChatElement(text, color, formats));
 		return selectLast();
@@ -481,7 +482,7 @@ public class ChatElement
 	 * @param color the color of the object
 	 * @param formats the formats of the object
 	 */
-	public ChatElement append(Object object, ChatColor color, ChatFormat... formats)
+	public ChatElement append(Object object, LqColor color, LqFormat... formats)
 	{
 		push(new ChatElement(object.toString(), color, formats));
 		return selectLast();
@@ -505,7 +506,7 @@ public class ChatElement
 	 * @param color the color of the text
 	 * @param formats the formats of the text
 	 */
-	public ChatElement append(String text, ChatColor color, ChatFormat... formats)
+	public ChatElement append(String text, LqColor color, LqFormat... formats)
 	{
 		push(new ChatElement(text, color, formats));
 		return selectLast();
@@ -557,7 +558,7 @@ public class ChatElement
 	 * @param color the color of the object
 	 * @param formats the formats of the object
 	 */
-	public ChatElement insert(int index, Object object, ChatColor color, ChatFormat... formats)
+	public ChatElement insert(int index, Object object, LqColor color, LqFormat... formats)
 	{
 		push(index, new ChatElement(object.toString(), color, formats));
 		return selectLast();
@@ -581,7 +582,7 @@ public class ChatElement
 	 * @param color the color of the text
 	 * @param formats the formats of the text
 	 */
-	public ChatElement insert(int index, String text, ChatColor color, ChatFormat... formats)
+	public ChatElement insert(int index, String text, LqColor color, LqFormat... formats)
 	{
 		push(index, new ChatElement(text, color, formats));
 		return selectLast();
@@ -637,7 +638,7 @@ public class ChatElement
 	 * @param width the desired width of the block
 	 * @param alignment the alignment of the block
 	 */
-	public ChatElement block(int width, ChatAlignment alignment)
+	public ChatElement block(int width, LqAlignment alignment)
 	{
 		ChatElement block = Chat.block(selection, width, alignment);
 		if(selection == this)
