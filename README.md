@@ -3,76 +3,66 @@ LiquidF [ ![Build Status][build-badge] ][build] [ ![Downloads][dl-badge] ][dl] [
 #####a minecraft chat formatter that supports format codes, JSON features, and pseudo-tabs
 
 LiquidF allows you to easily build up formatted chat messages and output them as a JSON string.
-There are two ways to do this: via the `.toJSONString()` method, or to send it directly to a subclass of `ChatReciever` with `.send(ChatReciever)`.
 
-You can also output it as a legacy string (for console output), but you will lose JSON features in the process.
+The JSON string is formatted according to this Gist: https://gist.github.com/Dinnerbone/5631634
 
-Implementation
+You can also output it as a legacy string for use outside of Minecraft players.
+Of course, any extra JSON functions won't be carried over.
+
+ - [Contributing](#contributing)
+ - [Usage](#usage)
+ - [Custom Font Support](#customfontsupport)
+
+Contributing
 ---
-Sending a formatted message directly to a player requires that you wrap a Minecraft Player object in the `ChatReciever` class.
 
-An example, in Bukkit (v1.7):
+Feel free to fork this project and create pull requests.
+
+There's no contributing guideline yet, but just remember to be consistent with the rest of the code.
+
+Usage
+---
+Note that the message builder is different from `ChatElement()`: most functions are run in the opposite order.
+
+That is because text elements are now immutable, so instead of changing information about a text element after appending it,
+you have to prime the information before appending it.
+
+####Building a Chat Message
 ```java
-import ChatReciever;
-import net.minecraft.server.v1_7_R4.ChatSerializer;
-import net.minecraft.server.v1_7_R4.PacketPlayOutChat;
-import org.bukkit.entity.Player;
+LqMessage msg = (new LqMessage()).color(LqColor.GREEN).format(LqFormat.BOLD).text("liquidf");
 
-public class BukkitChatReciever extends ChatReciever {
+/*
+	output: "{"text":"liquidf","color":"green","bold":"true"}"
+*/
+String json = msg.toJSONString();
 
+/*
+	output: "§a§lliquidf"
+*/
+String legacy = msg.toString();
+```
+
+####Pseudo-Tab Support
+Because tabs aren't natively supported in Minecraft, we try to build around that by offering pseudo-tabs, which are created by using a combination of spaces and filler characters to achieve alignment in text.
+
+You can test out the filler generator yourself by running `LiquidF().createFiller(40)`, which will create filler at a pixel width (40, for example).
+
+Custom Font Support
+---
+Because of LiquidF's dependence on the character sizes of a font, we provide an interface `LqFontInfo` that will allow developers to support custom fonts.
+
+```java
+public class CustomFontInfo implements LqFontInfo
+{
 	@Override
-	public void isJSONSupported() { return true; }
-
-	@Override
-	public void sendJSONMessage(String... lines) {
-		for(String line: lines) {
-			PacketPlayOutChat packet = new PacketPlayOutChat(ChatSerializer.a(line));
-			((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
-		}
+	public int getWidth(char c)
+	{
+		//return width lookups here
 	}
-
 }
 ```
 
-Examples
-------
-Creating colored / formatted text:
-```java
-new ChatElement("bold red").color(ChatColor.RED).formats(ChatColor.BOLD).send(player);
-```
-
-Creating colored / formatted text (consolidated):
-```java
-new ChatElement("bold red", ChatColor.RED, ChatColor.BOLD).send(player);
-```
-
-Creating colored / formatted text (legacy):
-```java
-new ChatElement(Chat.colorize("&c&lbold red")).send(player);
-```
-
-Creating text with a tooltip:
-```java
-new ChatElement("text").tooltip("more text", "even more text").send(player);
-```
-
-Creating text that runs a command:
-```java
-new ChatElement("[suicide]").run("/kill").send(player);
-```
-
-Creating text on multiple lines
-```java
-ChatBuilder cb = new ChatBuilder()
-cb.newline().append("Blue Line").color(ChatColor.BLUE);
-cb.newline().append("Red Line").color(ChatColor.RED);
-cb.send(player);
-```
-
-Creating aligned text (with a width of 100 and LEFT alignment):
-```java
-new ChatElement().append("Text").block(100, ChatAlignment.LEFT).send(player);
-```
+A vanilla implementation, `LqVanillaFontInfo`, is already provided.
 
 [build-badge]: https://img.shields.io/travis/hyperfresh/mc-liquidf.svg?style=flat-square
 
