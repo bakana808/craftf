@@ -58,4 +58,10 @@ public class LqVanillaFontInfo implements LqFontInfo
 			return default_width;
 		}
 	}
+
+	@Override
+	public int getTabWidth()
+	{
+		return 8;
+	}
 }
