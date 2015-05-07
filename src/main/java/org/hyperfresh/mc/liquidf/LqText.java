@@ -1,41 +1,71 @@
 package org.hyperfresh.mc.liquidf;
 
-import org.hyperfresh.mc.liquidf.enums.*;
+import org.hyperfresh.mc.liquidf.enums.LqColor;
+import org.hyperfresh.mc.liquidf.enums.LqFormat;
 
 /**
- * A text element that supports text modes, colors, formats, and click/hover events.
+ * A text element that supports only colors and formats.
  *
  * @author octopod
  */
-public class LqText extends LqLegacyText
+public class LqText
 {
 	/**
-	 * The text mode which tells you how the text will be used.
+	 * The text.
 	 */
-	final LqTextMode mode;
+	final String text;
 
 	/**
-	 * The click event of this text.
+	 * The color of the text.
 	 */
-	final LqClickEvent click;
+	final LqColor color;
 
 	/**
-	 * The hover event of this text.
+	 * The formats of this text.
 	 */
-	final LqHoverEvent hover;
+	final LqFormat[] formats;
 
 	/**
-	 * The amount of space, in pixels, that this text will take.
-	 * If set to -1, there will be no margins.
+	 * The full constructor for LqLegacyText
 	 */
-	final int margins;
-
-	public LqText(String text)
+	public LqText(String text, LqColor color, LqFormat... formats)
 	{
-		super(text, LqColor.WHITE, LqFormat.NO_FORMATS);
-		this.mode = LqTextMode.TEXT;
-		this.click = null;
-		this.hover = null;
-		this.margins = -1;
+		this.text = text;
+		this.color = color;
+		this.formats = formats;
+	}
+
+	public String getText()
+	{
+		return text;
+	}
+
+	public LqColor getColor()
+	{
+		return color;
+	}
+
+	public LqFormat[] getFormats()
+	{
+		return formats;
+	}
+
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(color);
+
+		for (LqFormat format : formats)
+		{
+			sb.append(format);
+		}
+
+		sb.append(text);
+
+		//to make sure formats are reset after this text
+		sb.append(LqFormat.RESET);
+
+		return sb.toString();
 	}
 }
