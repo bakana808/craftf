@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
  * @author octopod
  */
 public enum LqFormat
@@ -24,7 +23,7 @@ public enum LqFormat
 
 	static
 	{
-		for(LqFormat f: values()) map.put(f.character, f);
+		for (LqFormat f : values()) map.put(f.character, f);
 	}
 
 	private LqFormat(char c)

@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
  * @author octopod
  */
 public enum LqColor
@@ -32,7 +31,7 @@ public enum LqColor
 
 	static
 	{
-		for(LqColor c: values()) map.put(c.character, c);
+		for (LqColor c : values()) map.put(c.character, c);
 	}
 
 	private LqColor(char c)

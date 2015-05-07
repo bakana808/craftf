@@ -27,7 +27,6 @@ public class LqLegacyText
 
 	/**
 	 * The full constructor for LqLegacyText
-	 *
 	 */
 	public LqLegacyText(String text, LqColor color, LqFormat... formats)
 	{
@@ -57,7 +56,7 @@ public class LqLegacyText
 
 		sb.append(color);
 
-		for(LqFormat format: formats)
+		for (LqFormat format : formats)
 		{
 			sb.append(format);
 		}

@@ -78,23 +78,58 @@ public class ChatElement
 	public boolean isPlain()
 	{
 		return
-			color == null &&
-			formats.length == 0 &&
-			click == null &&
-			hover == null &&
-			extras.size() == 0;
+				color == null &&
+						formats.length == 0 &&
+						click == null &&
+						hover == null &&
+						extras.size() == 0;
 	}
 
 	//Variable getters
-	public LqClickEvent getClick() 		{return click;}
-	public LqHoverEvent getHover() 		{return hover;}
-	public String 			getClickValue() {return click_value == null ? "" : click_value;}
-	public String 			getHoverValue() {return hover_value == null ? "" : hover_value;}
-	public String 			getText() 		{return text;}
-	public LqColor getColor() 		{return color;}
-	public LqFormat[] 	getFormats() 	{return formats;}
-	public boolean			getTranslate() {return translate;}
-	public List<String> 	getTranslateWith() {return with;}
+	public LqClickEvent getClick()
+	{
+		return click;
+	}
+
+	public LqHoverEvent getHover()
+	{
+		return hover;
+	}
+
+	public String getClickValue()
+	{
+		return click_value == null ? "" : click_value;
+	}
+
+	public String getHoverValue()
+	{
+		return hover_value == null ? "" : hover_value;
+	}
+
+	public String getText()
+	{
+		return text;
+	}
+
+	public LqColor getColor()
+	{
+		return color;
+	}
+
+	public LqFormat[] getFormats()
+	{
+		return formats;
+	}
+
+	public boolean getTranslate()
+	{
+		return translate;
+	}
+
+	public List<String> getTranslateWith()
+	{
+		return with;
+	}
 
 	/**
 	 * Returns a list of the extra elements
@@ -109,12 +144,13 @@ public class ChatElement
 	public List<Object> getSimpleExtraElements()
 	{
 		List<Object> list = new ArrayList<>();
-		for(ChatElement element: extras)
+		for (ChatElement element : extras)
 		{
-			if(element.isPlain())
+			if (element.isPlain())
 			{
 				list.add(element.getText());
-			} else {
+			} else
+			{
 				list.add(element);
 			}
 		}
@@ -150,7 +186,7 @@ public class ChatElement
 	 * Sets the text of this element.
 	 * Set <code>translate</code> to true if the text should be translated.
 	 *
-	 * @param text the text of the element
+	 * @param text      the text of the element
 	 * @param translate whether to translate the text or not
 	 */
 	public ChatElement setText(String text, boolean translate)
@@ -206,15 +242,30 @@ public class ChatElement
 		return this;
 	}
 
-	public ChatElement bold() {return format(LqFormat.BOLD);}
+	public ChatElement bold()
+	{
+		return format(LqFormat.BOLD);
+	}
 
-	public ChatElement italic() {return format(LqFormat.ITALIC);}
+	public ChatElement italic()
+	{
+		return format(LqFormat.ITALIC);
+	}
 
-	public ChatElement underline() {return format(LqFormat.UNDERLINED);}
+	public ChatElement underline()
+	{
+		return format(LqFormat.UNDERLINED);
+	}
 
-	public ChatElement strikethrough() {return format(LqFormat.STRIKETHROUGH);}
+	public ChatElement strikethrough()
+	{
+		return format(LqFormat.STRIKETHROUGH);
+	}
 
-	public ChatElement obfuscate() {return format(LqFormat.OBFUSCATED);}
+	public ChatElement obfuscate()
+	{
+		return format(LqFormat.OBFUSCATED);
+	}
 
 	/**
 	 * Sets the click event of this element.
@@ -312,7 +363,6 @@ public class ChatElement
 	 * Selects an extra element by index
 	 *
 	 * @param index the index of the element
-	 *
 	 * @throws IllegalArgumentException if the index doesn't exist
 	 */
 	public ChatElement selectElement(int index)
@@ -350,7 +400,7 @@ public class ChatElement
 
 	private void validateNotNull(Object object, String message)
 	{
-		if(object == null)
+		if (object == null)
 		{
 			throw new IllegalArgumentException(message);
 		}
@@ -390,8 +440,8 @@ public class ChatElement
 	/**
 	 * Gets the ChatElement at the specified index.
 	 *
-	 * @throws IllegalArgumentException if the index is out of bounds
 	 * @return the selection
+	 * @throws IllegalArgumentException if the index is out of bounds
 	 */
 	public ChatElement getElementAt(int index)
 	{
@@ -401,7 +451,7 @@ public class ChatElement
 
 	private void remove_last()
 	{
-		if(extras != null)
+		if (extras != null)
 		{
 			extras.remove(extras.size() - 1);
 		}
@@ -430,7 +480,7 @@ public class ChatElement
 	{
 		validateNotNull(array, "ChatElement array cannot be null");
 		validateIndex(index);
-		for(int i = extras.size() - 1; i >= 0; i--)
+		for (int i = extras.size() - 1; i >= 0; i--)
 		{
 			extras.add(index, array[i]);
 		}
@@ -438,13 +488,13 @@ public class ChatElement
 
 	public ChatElement appendif(boolean b, String text, LqColor color, LqFormat... formats)
 	{
-		if(b) append(text, color, formats);
+		if (b) append(text, color, formats);
 		return this;
 	}
 
 	public ChatElement appendif(boolean b, String text)
 	{
-		if(b) append(text);
+		if (b) append(text);
 		return this;
 	}
 
@@ -479,8 +529,8 @@ public class ChatElement
 	/**
 	 * Appends an object to the end of the builder and selects it, while setting color and formats.
 	 *
-	 * @param object the object
-	 * @param color the color of the object
+	 * @param object  the object
+	 * @param color   the color of the object
 	 * @param formats the formats of the object
 	 */
 	public ChatElement append(Object object, LqColor color, LqFormat... formats)
@@ -503,8 +553,8 @@ public class ChatElement
 	/**
 	 * Appends setText to the end of the builder and selects it, while setting color and formats.
 	 *
-	 * @param text the text to append
-	 * @param color the color of the text
+	 * @param text    the text to append
+	 * @param color   the color of the text
 	 * @param formats the formats of the text
 	 */
 	public ChatElement append(String text, LqColor color, LqFormat... formats)
@@ -555,8 +605,8 @@ public class ChatElement
 	/**
 	 * Appends an object to the end of the builder and selects it, while setting color and formats.
 	 *
-	 * @param object the object
-	 * @param color the color of the object
+	 * @param object  the object
+	 * @param color   the color of the object
 	 * @param formats the formats of the object
 	 */
 	public ChatElement insert(int index, Object object, LqColor color, LqFormat... formats)
@@ -579,8 +629,8 @@ public class ChatElement
 	/**
 	 * Appends text to the end of the builder and selects it, while setting color and formats.
 	 *
-	 * @param text the text to append
-	 * @param color the color of the text
+	 * @param text    the text to append
+	 * @param color   the color of the text
 	 * @param formats the formats of the text
 	 */
 	public ChatElement insert(int index, String text, LqColor color, LqFormat... formats)
@@ -636,16 +686,17 @@ public class ChatElement
 	 * Aligns the selected element to fit the specified width.
 	 * If the base element is selected, it will be cleared and all generated strings will be appended.
 	 *
-	 * @param width the desired width of the block
+	 * @param width     the desired width of the block
 	 * @param alignment the alignment of the block
 	 */
 	public ChatElement block(int width, LqAlignment alignment)
 	{
 		ChatElement block = Chat.block(selection, width, alignment);
-		if(selection == this)
+		if (selection == this)
 		{
 			text = "";
-		} else {
+		} else
+		{
 			remove_last();
 		}
 		return append(block);
@@ -665,7 +716,6 @@ public class ChatElement
 	 * Appends any amount of spaces to the end of the ChatElement.
 	 *
 	 * @param x the amount of spaces
-	 *
 	 * @return the ChatElement
 	 */
 	public ChatElement sp(int x)
@@ -685,11 +735,10 @@ public class ChatElement
 	 */
 	public ChatElement filler(int width)
 	{
-		if(width == 2)
+		if (width == 2)
 		{
 			push(Chat.FILLER_2PX);
-		}
-		else
+		} else
 		{
 			push(Chat.filler(width));
 		}
@@ -709,16 +758,21 @@ public class ChatElement
 
 	public void send(ChatReciever player, boolean split)
 	{
-		if(split)
+		if (split)
 		{
-			for(ChatElement element: extras)
+			for (ChatElement element : extras)
 			{
-				if(element.getColor() == null) {element.setColor(color);}
-				if(element.getFormats() == null) {element.setFormat(formats);}
+				if (element.getColor() == null)
+				{
+					element.setColor(color);
+				}
+				if (element.getFormats() == null)
+				{
+					element.setFormat(formats);
+				}
 				player.sendJSONMessage(element.toJSONString());
 			}
-		}
-		else
+		} else
 		{
 			player.sendJSONMessage(toJSONString());
 		}
