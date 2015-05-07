@@ -1,7 +1,8 @@
 package org.hyperfresh.mc.liquidf.enums;
 
 /**
- * @author Octopod - octopodsquad@gmail.com
+ *
+ * @author octopod
  */
 public enum LqClickEvent
 {

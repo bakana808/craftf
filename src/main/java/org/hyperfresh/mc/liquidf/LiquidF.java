@@ -10,7 +10,8 @@ import java.util.*;
 
 /**
  * LiquidF static utilities
- * @author Octopod
+ *
+ * @author octopod
  */
 public class LiquidF
 {

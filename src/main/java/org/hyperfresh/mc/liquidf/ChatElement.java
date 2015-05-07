@@ -12,7 +12,8 @@ import java.util.List;
  * Last Updated: 2.15.2014
  * ChatElement is a representation of a Chat Object in Minecraft's new JSON chat.
  * Utitlizes "method chaining."
- * @author Octopod
+ *
+ * @author octopod
  */
 public class ChatElement
 {

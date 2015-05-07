@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Octopod - octopodsquad@gmail.com
+ *
+ * @author octopod
  */
 public enum LqColor
 {
