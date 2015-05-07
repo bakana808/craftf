@@ -11,7 +11,7 @@ Of course, any extra JSON functions won't be carried over.
 
  - [Contributing](#contributing)
  - [Usage](#usage)
- - [Custom Font Support](#customfontsupport)
+ - [Custom Font Support](#custom-font-support)
 
 Contributing
 ---
