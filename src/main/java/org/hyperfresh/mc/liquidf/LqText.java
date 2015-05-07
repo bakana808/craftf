@@ -10,6 +10,8 @@ import org.hyperfresh.mc.liquidf.enums.LqFormat;
  */
 public class LqText
 {
+	final public static LqText BLANK = new LqText("", LqColor.WHITE, LqFormat.NO_FORMATS);
+
 	/**
 	 * The text.
 	 */
