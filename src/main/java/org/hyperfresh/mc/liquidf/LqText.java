@@ -3,9 +3,10 @@ package org.hyperfresh.mc.liquidf;
 import org.hyperfresh.mc.liquidf.enums.*;
 
 /**
+ * A text element that supports text modes, colors, formats, and click/hover events.
  * @author octopod
  */
-public class LqText extends LqRawText
+public class LqText extends LqLegacyText
 {
     /**
      * The text mode which tells you how the text will be used.

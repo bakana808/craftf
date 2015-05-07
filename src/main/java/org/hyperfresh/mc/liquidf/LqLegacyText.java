@@ -4,10 +4,15 @@ import org.hyperfresh.mc.liquidf.enums.LqColor;
 import org.hyperfresh.mc.liquidf.enums.LqFormat;
 
 /**
+ * A text element that supports only colors and formats.
+ *
  * @author octopod
  */
-public class LqRawText
+public class LqLegacyText
 {
+	/**
+	 * The text.
+	 */
 	final String text;
 
 	/**
@@ -20,11 +25,30 @@ public class LqRawText
 	 */
 	final LqFormat[] formats;
 
-	public LqRawText(String text, LqColor color, LqFormat... formats)
+	/**
+	 * The full constructor for LqLegacyText
+	 *
+	 */
+	public LqLegacyText(String text, LqColor color, LqFormat... formats)
 	{
 		this.text = text;
 		this.color = color;
 		this.formats = formats;
+	}
+
+	public String getText()
+	{
+		return text;
+	}
+
+	public LqColor getColor()
+	{
+		return color;
+	}
+
+	public LqFormat[] getFormats()
+	{
+		return formats;
 	}
 
 	public String toString()
