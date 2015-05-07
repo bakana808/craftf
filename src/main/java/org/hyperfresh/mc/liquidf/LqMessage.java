@@ -1,7 +1,7 @@
 package org.hyperfresh.mc.liquidf;
 
 /**
- * Build up a chat message to be output to JSON or legacy.
+ * Builds up a chat message to be output to JSON or legacy.
  *
  * @author octopod
  */
