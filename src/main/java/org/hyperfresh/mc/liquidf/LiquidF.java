@@ -56,11 +56,6 @@ public class LiquidF
 		return width;
 	}
 
-	public static void send(ChatReciever target, String json)
-	{
-		target.sendJSONMessage(json);
-	}
-
 	public static String colorize(String message)
 	{
 		return colorize(message, '&');
