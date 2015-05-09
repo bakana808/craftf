@@ -16,61 +16,13 @@ import java.util.*;
 public class LiquidF
 {
 	/**
-	 * Map of all specific character widths other than 6, which most of the characters have.
-	 */
-	final private static Map<Character, Integer> widths = new HashMap<>();
-
-	static
-	{
-		widths.put('*', 5);
-		widths.put('>', 5);
-		widths.put('<', 5);
-		widths.put(',', 2);
-		widths.put('!', 2);
-		widths.put('{', 5);
-		widths.put('}', 5);
-		widths.put(')', 5);
-		widths.put('(', 5);
-		widths.put('\u00a7', 0); //section sign; Minecraft's color code symbol.
-		widths.put('[', 4);
-		widths.put(']', 4);
-		widths.put(':', 2);
-		widths.put('\'', 3);
-		widths.put('|', 2);
-		widths.put('.', 2);
-		widths.put('\u2019', 2); //filler character; Reverse quotation mark.
-		widths.put('`', 3); //old filler character; Width change since 1.7
-		widths.put(' ', 4);
-		widths.put('f', 5);
-		widths.put('k', 5);
-		widths.put('I', 4);
-		widths.put('t', 4);
-		widths.put('l', 3);
-		widths.put('i', 2);
-	}
-
-	/**
-	 * Returns the width of the inserted character, according to Minecraft's default chat font (in pixels)
-	 * Most characters are 6 pixels wide.
-	 *
-	 * @param character The setText to use for calculation.
-	 * @return The width of the setText inserted. (in pixels)
-	 */
-	static public int width(char character)
-	{
-		if (widths.containsKey(character))
-			return widths.get(character);
-		return 6;
-	}
-
-	/**
 	 * Returns the width of the setText inserted into the function.
 	 * Note that bolded characters are 1 pixel wider than normal.
 	 *
 	 * @param text The setText to use for calculation.
 	 * @return The width of the setText inserted. (in pixels)
 	 */
-	static public int width(String text)
+	static public int width(LqFontInfo fontInfo, String text)
 	{
 		int width = 0;
 		boolean isCode = false;
@@ -95,7 +47,7 @@ public class LiquidF
 					isCode = false;
 				} else
 				{
-					width += width(character);
+					width += fontInfo.getWidth(character);
 					if (bolded) width += 1;
 				}
 			}
