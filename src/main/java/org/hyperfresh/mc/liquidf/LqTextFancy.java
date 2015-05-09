@@ -30,12 +30,14 @@ public class LqTextFancy extends LqText
 	 */
 	final int margins;
 
-	public LqTextFancy(String text)
+	public LqTextFancy(String text, LqColor color, LqFormat[] formats,
+					   LqClickEvent click, LqText clickValue,
+					   LqHoverEvent hover, LqText hoverValue)
 	{
-		super(text, LqColor.WHITE, LqFormat.NO_FORMATS);
+		super(text, color, formats);
 		this.mode = LqTextMode.TEXT;
-		this.click = null;
-		this.hover = null;
+		this.click = click;
+		this.hover = hover;
 		this.margins = -1;
 	}
 }
