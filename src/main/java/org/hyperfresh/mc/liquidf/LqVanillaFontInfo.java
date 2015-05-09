@@ -6,6 +6,11 @@ import java.util.Map;
 public class LqVanillaFontInfo implements LqFontInfo
 {
 	/**
+	 * The current instance of LqVanillaFontInfo.
+	 */
+	final public static LqVanillaFontInfo INFO = new LqVanillaFontInfo();
+
+	/**
 	 * Map of all specific character widths other than the default.
 	 */
 	final private static Map<Character, Integer> widths = new HashMap<>();
@@ -46,6 +51,8 @@ public class LqVanillaFontInfo implements LqFontInfo
 		widths.put('l', 3);
 		widths.put('i', 2);
 	}
+
+	private LqVanillaFontInfo() { }
 
 	@Override
 	public int getWidth(char c)
