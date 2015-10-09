@@ -29,7 +29,7 @@ you have to prime the information before appending it.
 
 ####Building a Chat Message
 ```java
-LqMessage msg = (new LqMessage()).color(LqColor.GREEN).format(LqFormat.BOLD).text("liquidf");
+CFMessage msg = (new CFMessage()).color(CFColor.GREEN).format(CFFormat.BOLD).text("liquidf");
 
 /*
 	output: "{"text":"liquidf","color":"green","bold":"true"}"
@@ -49,10 +49,10 @@ You can test out the filler generator yourself by running `LiquidF().createFille
 
 Custom Font Support
 ---
-Because of LiquidF's dependence on the character sizes of a font, we provide an interface `LqFontInfo` that will allow developers to support custom fonts.
+Because of LiquidF's dependence on the character sizes of a font, we provide an interface `CFFontInfo` that will allow developers to support custom fonts.
 
 ```java
-public class CustomFontInfo implements LqFontInfo
+public class CustomFontInfo implements CFFontInfo
 {
 	@Override
 	public int getWidth(char c)
@@ -62,7 +62,7 @@ public class CustomFontInfo implements LqFontInfo
 }
 ```
 
-A vanilla implementation, `LqVanillaFontInfo`, is already provided.
+A vanilla implementation, `CFVanillaFontInfo`, is already provided.
 
 [build-badge]: https://img.shields.io/travis/hyperfresh/mc-liquidf.svg?style=flat-square
 

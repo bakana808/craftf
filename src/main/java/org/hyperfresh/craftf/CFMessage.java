@@ -1,9 +1,9 @@
-package org.hyperfresh.mc.liquidf;
+package org.hyperfresh.craftf;
 
-import org.hyperfresh.mc.liquidf.enums.LqClickEvent;
-import org.hyperfresh.mc.liquidf.enums.LqColor;
-import org.hyperfresh.mc.liquidf.enums.LqFormat;
-import org.hyperfresh.mc.liquidf.enums.LqHoverEvent;
+import org.hyperfresh.craftf.enums.CFClickEvent;
+import org.hyperfresh.craftf.enums.CFColor;
+import org.hyperfresh.craftf.enums.CFFormat;
+import org.hyperfresh.craftf.enums.CFHoverEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,21 +13,21 @@ import java.util.List;
  *
  * @author octopod
  */
-public class LqMessage
+public class CFMessage
 {
-	private final List<LqText> textList = new ArrayList<>();
+	private final List<CFText> textList = new ArrayList<>();
 
-	LqColor 		color = LqColor.WHITE;
+	CFColor 		color = CFColor.WHITE;
 
-	LqFormat[] 		formats = LqFormat.NO_FORMATS;
+	CFFormat[] 		formats = CFFormat.NO_FORMATS;
 
-	LqClickEvent 	click = null;
+	CFClickEvent 	click = null;
 
-	LqText			clickValue = LqText.BLANK;
+	CFText			clickValue = CFText.BLANK;
 
-	LqHoverEvent	hover = null;
+	CFHoverEvent	hover = null;
 
-	LqText			hoverValue = LqText.BLANK;
+	CFText			hoverValue = CFText.BLANK;
 
 	/**
 	 * Primes a color to be used in the next added text.
@@ -35,7 +35,7 @@ public class LqMessage
 	 * @param color
 	 * @return
 	 */
-	public LqMessage color(LqColor color)
+	public CFMessage color(CFColor color)
 	{
 		this.color = color;
 		return this;
@@ -47,23 +47,23 @@ public class LqMessage
 	 * @param formats
 	 * @return
 	 */
-	public LqMessage format(LqFormat... formats)
+	public CFMessage format(CFFormat... formats)
 	{
 		this.formats = formats;
 		return this;
 	}
 
-	public LqMessage text(String text)
+	public CFMessage text(String text)
 	{
 		if(click == null && hover == null)
 		{
-			//use LqText instead
-			textList.add(new LqText(text, color, formats));
+			//use CFText instead
+			textList.add(new CFText(text, color, formats));
 		}
 		else
 		{
-			//use LqTextFancy
-			textList.add(new LqTextFancy(text, color, formats,
+			//use CFTextFancy
+			textList.add(new CFTextFancy(text, color, formats,
 					click, clickValue, hover, hoverValue));
 		}
 		return this;

@@ -1,14 +1,14 @@
-package org.hyperfresh.mc.liquidf;
+package org.hyperfresh.craftf;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class LqVanillaFontInfo implements LqFontInfo
+public class CFVanillaFontInfo implements CFFontInfo
 {
 	/**
-	 * The current instance of LqVanillaFontInfo.
+	 * The current instance of CFVanillaFontInfo.
 	 */
-	final public static LqVanillaFontInfo INFO = new LqVanillaFontInfo();
+	final public static CFVanillaFontInfo INFO = new CFVanillaFontInfo();
 
 	/**
 	 * Map of all specific character widths other than the default.
@@ -52,7 +52,7 @@ public class LqVanillaFontInfo implements LqFontInfo
 		widths.put('i', 2);
 	}
 
-	private LqVanillaFontInfo() { }
+	private CFVanillaFontInfo() { }
 
 	@Override
 	public int getWidth(char c)

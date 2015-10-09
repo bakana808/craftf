@@ -1,8 +1,8 @@
-package org.hyperfresh.mc.liquidf;
+package org.hyperfresh.craftf;
 
-import org.hyperfresh.mc.liquidf.enums.LqAlignment;
-import org.hyperfresh.mc.liquidf.enums.LqColor;
-import org.hyperfresh.mc.liquidf.enums.LqFormat;
+import org.hyperfresh.craftf.enums.CFAlignment;
+import org.hyperfresh.craftf.enums.CFColor;
+import org.hyperfresh.craftf.enums.CFFormat;
 
 import org.json.simple.JSONValue;
 
@@ -22,7 +22,7 @@ public class LiquidF
 	 * @param text The setText to use for calculation.
 	 * @return The width of the setText inserted. (in pixels)
 	 */
-	static public int width(LqFontInfo fontInfo, String text)
+	static public int width(CFFontInfo fontInfo, String text)
 	{
 		int width = 0;
 		boolean isCode = false;
@@ -37,7 +37,7 @@ public class LiquidF
 			{
 				if (isCode)
 				{
-					if (bolded && LqColor.fromChar(character) != null)
+					if (bolded && CFColor.fromChar(character) != null)
 					{
 						bolded = false;
 					} else if (!bolded)
@@ -93,7 +93,7 @@ public class LiquidF
 		{
 			sb.append(element.getColor());
 		}
-		for (LqFormat format : element.getFormats())
+		for (CFFormat format : element.getFormats())
 		{
 			sb.append(format);
 		}
@@ -108,7 +108,7 @@ public class LiquidF
 			{
 				sb.append(extra.getColor());
 			}
-			for (LqFormat format : extra.getFormats())
+			for (CFFormat format : extra.getFormats())
 			{
 				sb.append(format);
 			}
@@ -140,8 +140,8 @@ public class LiquidF
 
 		StringBuilder text = new StringBuilder();
 		boolean nextIsColorCode = false;
-		LqColor lastColor = LqColor.WHITE;
-		List<LqFormat> formats = new ArrayList<>();
+		CFColor lastColor = CFColor.WHITE;
+		List<CFFormat> formats = new ArrayList<>();
 
 		for (char c : message.toCharArray())
 		{
@@ -155,14 +155,14 @@ public class LiquidF
 			if (nextIsColorCode)
 			{
 				nextIsColorCode = false;
-				LqColor color = LqColor.fromChar(c);
-				LqFormat format = LqFormat.fromChar(c);
+				CFColor color = CFColor.fromChar(c);
+				CFFormat format = CFFormat.fromChar(c);
 				if (color != null && format == null)
 				{ //This is a color
 					//Push new element
 					if (!text.toString().equals(""))
 					{
-						cb.append(text.toString()).color(lastColor).format(formats.toArray(new LqFormat[formats.size()]));
+						cb.append(text.toString()).color(lastColor).format(formats.toArray(new CFFormat[formats.size()]));
 					}
 					//Reset variables
 					text = new StringBuilder();
@@ -179,7 +179,7 @@ public class LiquidF
 
 		}
 
-		cb.append(text.toString()).color(lastColor).format(formats.toArray(new LqFormat[formats.size()]));
+		cb.append(text.toString()).color(lastColor).format(formats.toArray(new CFFormat[formats.size()]));
 
 		return cb;
 	}
@@ -296,9 +296,9 @@ public class LiquidF
 	 * @param renderer   The interface that this method will use to build the return object.
 	 * @return The setText fitted to toWidth.
 	 */
-	static private <T> T block(String text, int toWidth, LqAlignment alignment, char fillerChar, boolean precise, BlockRenderer<T> renderer)
+	static private <T> T block(String text, int toWidth, CFAlignment alignment, char fillerChar, boolean precise, BlockRenderer<T> renderer)
 	{
-		String cutText = cut(text, toWidth)[0] + LqFormat.RESET;
+		String cutText = cut(text, toWidth)[0] + CFFormat.RESET;
 
 		//The total width (in pixels) needed to fill
 		final int totalFillerWidth = toWidth - width(cutText);
@@ -329,37 +329,37 @@ public class LiquidF
 		return renderer.render(filler(lFillerWidth, precise, fillerChar, FILLER_RENDERER_STRING), cutText, filler(rFillerWidth, precise, fillerChar, FILLER_RENDERER_STRING));
 	}
 
-	static public String blockString(String text, int toWidth, LqAlignment alignment)
+	static public String blockString(String text, int toWidth, CFAlignment alignment)
 	{
 		return blockString(text, toWidth, alignment, ' ', true);
 	}
 
-	static public String blockString(String text, int toWidth, LqAlignment alignment, char fillerChar, boolean precise)
+	static public String blockString(String text, int toWidth, CFAlignment alignment, char fillerChar, boolean precise)
 	{
 		return block(text, toWidth, alignment, fillerChar, precise, BLOCK_RENDERER_STRING);
 	}
 
-	static public ChatElement block(String text, int toWidth, LqAlignment alignment)
+	static public ChatElement block(String text, int toWidth, CFAlignment alignment)
 	{
 		return block(text, toWidth, alignment, ' ', true);
 	}
 
-	static public ChatElement block(String text, int toWidth, LqAlignment alignment, char fillerChar, boolean precise)
+	static public ChatElement block(String text, int toWidth, CFAlignment alignment, char fillerChar, boolean precise)
 	{
 		return block(text, toWidth, alignment, fillerChar, precise, BLOCK_RENDERER_CHAT);
 	}
 
-	static public ChatElement block(ChatElement element, int toWidth, LqAlignment alignment)
+	static public ChatElement block(ChatElement element, int toWidth, CFAlignment alignment)
 	{
 		return block(element, toWidth, alignment, ' ', true);
 	}
 
-	static public ChatElement block(ChatElement element, int toWidth, LqAlignment alignment, char fillerChar, boolean precise)
+	static public ChatElement block(ChatElement element, int toWidth, CFAlignment alignment, char fillerChar, boolean precise)
 	{
 		return block(toLegacyString(element), toWidth, alignment, fillerChar, precise, BLOCK_RENDERER_CHAT);
 	}
 
-	final static LqColor FILLER_COLOR = LqColor.DARK_GRAY;
+	final static CFColor FILLER_COLOR = CFColor.DARK_GRAY;
 
 	public final static String FILLER_2PX_RAW = FILLER_COLOR + "\u2019";
 	public final static ChatElement FILLER_2PX = new ChatElement(FILLER_2PX_RAW);
@@ -403,7 +403,7 @@ public class LiquidF
 					break;
 				}
 				// Use a bolded space (4px + 1px)
-				filler.append(LqFormat.BOLD).append(' ').append(LqFormat.RESET);
+				filler.append(CFFormat.BOLD).append(' ').append(CFFormat.RESET);
 				break;
 			case 4:
 				if (customFillerWidth == 4)
@@ -422,7 +422,7 @@ public class LiquidF
 				}
 				if (!precise) break;
 				// Use the bolded 2px filler (2px + 1px)
-				filler.append(FILLER_COLOR).append(LqFormat.BOLD).append(FILLER_2PX_RAW).append(LqFormat.RESET);
+				filler.append(FILLER_COLOR).append(CFFormat.BOLD).append(FILLER_2PX_RAW).append(CFFormat.RESET);
 				break;
 			case 2:
 				if (customFillerWidth == 2)
@@ -432,7 +432,7 @@ public class LiquidF
 				}
 				if (!precise) break;
 				// Use the 2px filler
-				filler.append(FILLER_COLOR).append(FILLER_2PX_RAW).append(LqFormat.RESET);
+				filler.append(FILLER_COLOR).append(FILLER_2PX_RAW).append(CFFormat.RESET);
 				break;
 		}
 
@@ -549,7 +549,7 @@ public class LiquidF
 			json.put("hoverEvent", hover);
 		}
 
-		for (LqFormat format : element.getFormats())
+		for (CFFormat format : element.getFormats())
 		{
 			json.put(format.name().toLowerCase(), true);
 		}

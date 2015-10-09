@@ -1,16 +1,16 @@
-package org.hyperfresh.mc.liquidf;
+package org.hyperfresh.craftf;
 
-import org.hyperfresh.mc.liquidf.enums.LqColor;
-import org.hyperfresh.mc.liquidf.enums.LqFormat;
+import org.hyperfresh.craftf.enums.CFColor;
+import org.hyperfresh.craftf.enums.CFFormat;
 
 /**
  * A text element that supports only colors and formats.
  *
  * @author octopod
  */
-public class LqText
+public class CFText
 {
-	final public static LqText BLANK = new LqText("", LqColor.WHITE, LqFormat.NO_FORMATS);
+	final public static CFText BLANK = new CFText("", CFColor.WHITE, CFFormat.NO_FORMATS);
 
 	/**
 	 * The text.
@@ -20,17 +20,17 @@ public class LqText
 	/**
 	 * The color of the text.
 	 */
-	final LqColor color;
+	final CFColor color;
 
 	/**
 	 * The formats of this text.
 	 */
-	final LqFormat[] formats;
+	final CFFormat[] formats;
 
 	/**
-	 * The full constructor for LqLegacyText
+	 * The full constructor for CFLegacyText
 	 */
-	public LqText(String text, LqColor color, LqFormat... formats)
+	public CFText(String text, CFColor color, CFFormat... formats)
 	{
 		this.text = text;
 		this.color = color;
@@ -42,12 +42,12 @@ public class LqText
 		return text;
 	}
 
-	public LqColor getColor()
+	public CFColor getColor()
 	{
 		return color;
 	}
 
-	public LqFormat[] getFormats()
+	public CFFormat[] getFormats()
 	{
 		return formats;
 	}
@@ -58,7 +58,7 @@ public class LqText
 
 		sb.append(color);
 
-		for (LqFormat format : formats)
+		for (CFFormat format : formats)
 		{
 			sb.append(format);
 		}
@@ -66,7 +66,7 @@ public class LqText
 		sb.append(text);
 
 		//to make sure formats are reset after this text
-		sb.append(LqFormat.RESET);
+		sb.append(CFFormat.RESET);
 
 		return sb.toString();
 	}

@@ -1,4 +1,4 @@
-package org.hyperfresh.mc.liquidf.enums;
+package org.hyperfresh.craftf.enums;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @author octopod
  */
-public enum LqColor
+public enum CFColor
 {
 	BLACK('0'),
 	DARK_BLUE('1'),
@@ -27,14 +27,14 @@ public enum LqColor
 
 	Character character = null;
 
-	private static Map<Character, LqColor> map = new HashMap<>();
+	private static Map<Character, CFColor> map = new HashMap<>();
 
 	static
 	{
-		for (LqColor c : values()) map.put(c.character, c);
+		for (CFColor c : values()) map.put(c.character, c);
 	}
 
-	private LqColor(char c)
+	private CFColor(char c)
 	{
 		character = c;
 	}
@@ -44,7 +44,7 @@ public enum LqColor
 		return character;
 	}
 
-	static public LqColor fromChar(char c)
+	static public CFColor fromChar(char c)
 	{
 		return map.get(c);
 	}

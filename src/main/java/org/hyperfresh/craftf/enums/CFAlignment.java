@@ -1,9 +1,9 @@
-package org.hyperfresh.mc.liquidf.enums;
+package org.hyperfresh.craftf.enums;
 
 /**
  * @author octopod
  */
-public enum LqAlignment
+public enum CFAlignment
 {
 	LEFT, RIGHT, CENTER, CENTER_CEIL
 }

@@ -1,11 +1,11 @@
-package org.hyperfresh.mc.liquidf;
+package org.hyperfresh.craftf;
 
 /**
  * Various information about a Minecraft font.
  *
  * @author octopod
  */
-public interface LqFontInfo
+public interface CFFontInfo
 {
 	/**
 	 * Gets the width, in pixels, of a character using this font.

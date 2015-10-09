@@ -1,9 +1,9 @@
-package org.hyperfresh.mc.liquidf.enums;
+package org.hyperfresh.craftf.enums;
 
 /**
  * @author octopod
  */
-public enum LqHoverEvent
+public enum CFHoverEvent
 {
 	SHOW_TEXT,
 	SHOW_ACHIEVEMENT,

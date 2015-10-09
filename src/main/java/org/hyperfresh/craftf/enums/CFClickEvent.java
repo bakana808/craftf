@@ -1,9 +1,9 @@
-package org.hyperfresh.mc.liquidf.enums;
+package org.hyperfresh.craftf.enums;
 
 /**
  * @author octopod
  */
-public enum LqClickEvent
+public enum CFClickEvent
 {
 	OPEN_URL,
 	OPEN_FILE,
