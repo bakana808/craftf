@@ -3,7 +3,9 @@ package org.hyperfresh.craftf.enums;
 /**
  * @author octopod
  */
-public enum CFAlignment
+public enum HoverEvent
 {
-	LEFT, RIGHT, CENTER, CENTER_CEIL
+	SHOW_TEXT,
+	SHOW_ACHIEVEMENT,
+	SHOW_ITEM
 }

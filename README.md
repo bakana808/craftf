@@ -1,10 +1,10 @@
-LiquidF [ ![Build Status][build-badge] ][build] [ ![Downloads][dl-badge] ][dl] [ ![Join IRC][irc-badge] ][irc]
+CraftF [ ![Build Status][build-badge] ][build] [ ![Downloads][dl-badge] ][dl] [ ![Join IRC][irc-badge] ][irc]
 ======
-#####a minecraft chat formatter that supports format codes, JSON features, and pseudo-tabs
+##### a markup language based off of minecraft's color code system that supports all JSON features and some extras
 
-LiquidF allows you to easily build up formatted chat messages and output them as a JSON string.
+CraftF allows you to easily write formatted chat messages that use JSON features.
 
-The JSON string is formatted according to this Gist: https://gist.github.com/Dinnerbone/5631634
+The JSON string is formatted according to this Gist: <https://gist.github.com/Dinnerbone/5631634>
 
 You can also output it as a legacy string for use outside of Minecraft players.
 Of course, any extra JSON functions won't be carried over.
@@ -20,57 +20,18 @@ Feel free to fork this project and create pull requests.
 
 There's no contributing guideline yet, but just remember to be consistent with the rest of the code.
 
-Usage
+Documentation
 ---
-Note that the message builder is different from `ChatElement()`: most functions are run in the opposite order.
 
-That is because text elements are now immutable, so instead of changing information about a text element after appending it,
-you have to prime the information before appending it.
+Very work-in-progress documentation [here](docs/spec.md).
 
-####Building a Chat Message
-```java
-CFMessage msg = (new CFMessage()).color(CFColor.GREEN).format(CFFormat.BOLD).text("liquidf");
+[build-badge]: https://img.shields.io/travis/hyperfresh/craftf.svg?style=flat-square
 
-/*
-	output: "{"text":"liquidf","color":"green","bold":"true"}"
-*/
-String json = msg.toJSONString();
+[build]: https://travis-ci.org/hyperfresh/craftf
 
-/*
-	output: "§a§lliquidf"
-*/
-String legacy = msg.toString();
-```
+[dl-badge]: https://img.shields.io/github/downloads/hyperfresh/craftf/latest/total.svg?style=flat-square
 
-####Pseudo-Tab Support
-Because tabs aren't natively supported in Minecraft, we try to build around that by offering pseudo-tabs, which are created by using a combination of spaces and filler characters to achieve alignment in text.
-
-You can test out the filler generator yourself by running `LiquidF().createFiller(40)`, which will create filler at a pixel width (40, for example).
-
-Custom Font Support
----
-Because of LiquidF's dependence on the character sizes of a font, we provide an interface `CFFontInfo` that will allow developers to support custom fonts.
-
-```java
-public class CustomFontInfo implements CFFontInfo
-{
-	@Override
-	public int getWidth(char c)
-	{
-		//return width lookups here
-	}
-}
-```
-
-A vanilla implementation, `CFVanillaFontInfo`, is already provided.
-
-[build-badge]: https://img.shields.io/travis/hyperfresh/mc-liquidf.svg?style=flat-square
-
-[build]: https://travis-ci.org/hyperfresh/mc-liquidf
-
-[dl-badge]: https://img.shields.io/github/downloads/hyperfresh/mc-liquidf/latest/total.svg?style=flat-square
-
-[dl]: https://github.com/hyperfresh/mc-liquidf/releases/latest
+[dl]: https://github.com/hyperfresh/craftf/releases/latest
 
 [irc-badge]: https://img.shields.io/badge/irc-join%20chat-brightgreen.svg?style=flat-square
 

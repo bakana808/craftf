@@ -1,215 +1,216 @@
 package org.hyperfresh.craftf;
 
-import org.hyperfresh.craftf.enums.CFAlignment;
-import org.hyperfresh.craftf.enums.CFColor;
-import org.hyperfresh.craftf.enums.CFFormat;
+import org.hyperfresh.craftf.enums.ChatColor;
+import org.hyperfresh.craftf.parser.MarkupParser;
+import org.hyperfresh.craftf.parser.Parser;
+import org.hyperfresh.craftf.renderer.JSONRenderer;
+import org.hyperfresh.craftf.renderer.LegacyRenderer;
+import org.hyperfresh.craftf.renderer.Renderer;
 
-import org.json.simple.JSONValue;
-
-import java.util.*;
+import java.util.List;
 
 /**
- * LiquidF static utilities
+ * CraftF API
  *
  * @author octopod
  */
-public class LiquidF
-{
-	/**
-	 * Returns the width of the setText inserted into the function.
-	 * Note that bolded characters are 1 pixel wider than normal.
-	 *
-	 * @param text The setText to use for calculation.
-	 * @return The width of the setText inserted. (in pixels)
-	 */
-	static public int width(CFFontInfo fontInfo, String text)
-	{
-		int width = 0;
-		boolean isCode = false;
-		boolean bolded = false;
+public class CraftF {
 
-		for (char character : text.toCharArray())
-		{
-			if (character == '\u00a7')
-			{
-				isCode = true;
-			} else
-			{
-				if (isCode)
-				{
-					if (bolded && CFColor.fromChar(character) != null)
-					{
-						bolded = false;
-					} else if (!bolded)
-					{
-						bolded = (character == 'l' || character == 'L');
-					}
-					isCode = false;
-				} else
-				{
-					width += fontInfo.getWidth(character);
-					if (bolded) width += 1;
-				}
+	/**
+	 * The current instance of MarkupParser.
+	 */
+	private static final Parser<String> markupParser = new MarkupParser();
+
+	/**
+	 * The current instance of JSONRenderer.
+	 */
+	private static final Renderer<String> jsonRenderer = new JSONRenderer();
+
+	/**
+	 * The current instance of LegacyRenderer.
+	 */
+	private static final Renderer<String> legacyRenderer = new LegacyRenderer();
+
+	/**
+	 * The current instance of VanillaTextFont.
+	 */
+	private static final ChatFont vanillaFont = new VanillaChatFont();
+
+	public static Parser<String> getMarkupParser() {
+		return markupParser;
+	}
+
+	public static Renderer<String> getJsonRenderer() {
+		return jsonRenderer;
+	}
+
+	public static Renderer<String> getLegacyRenderer() {
+		return legacyRenderer;
+	}
+
+	public static ChatFont getVanillaFont() {
+		return vanillaFont;
+	}
+
+	public static <T> Element parse(T source, Parser<T> parser) {
+		return parser.parse(source);
+	}
+
+	/**
+	 * Shortcut method to {@code CraftF.parse(input, markupParser)}.
+	 *
+	 * @param input
+	 * @return
+	 */
+	public static Element parse(String input) {
+		return parse(input, markupParser);
+	}
+
+	/**
+	 * Shortcut method to {@code CraftF.render(element, markupParser)}.
+	 *
+	 * @param element the TextElement to render
+	 * @return
+	 */
+	public static <T> T render(Element element, Renderer<T> renderer) {
+		return renderer.render(element);
+	}
+
+
+	public static String render(Element element) {
+		return render(element, jsonRenderer);
+	}
+
+	/**
+	 * Shortcut method to parsing an object, then rendering it.
+	 *
+	 * @param input the source object
+	 * @param parser the parser
+	 * @param renderer the renderer
+	 * @param <I> input object type
+	 * @param <O> output object type
+	 * @return
+	 */
+	public static <I, O> O evaluate(I input, Parser<I> parser, Renderer<O> renderer) {
+		return renderer.render(parser.parse(input));
+	}
+
+	public static String evaluate(String input) {
+		return evaluate(input, markupParser, jsonRenderer);
+	}
+
+	// ====================================================
+	// TODO: review old code below
+
+	public static String fixText(String text) {
+		text = text.replaceAll("(\\n|\\r)", "\\\\n");
+		return text;
+	}
+
+	public static Element simplify(Element original) {
+
+		Element parent = new ChatElement(original);
+
+		List<Element> children = parent.getChildren();
+
+		// detach all empty children
+		//
+		for(int i = 0; i < children.size(); i++) {
+			Element child = children.get(i);
+			if(child.isEmpty()) {
+				parent.detach(child);
+			} else {
+				children.set(i, simplify(child));
 			}
 		}
 
-		return width;
+		// if the parent has no text and has only one child,
+		// copy all properties from the child onto the parent, then detach it.
+		// example:
+		//
+		// {"text":"", "extra":[{"text":"extra", "color":"green"}]}
+		//
+		// would simplify into:
+		//
+		// {"text":"extra", "color":"green"}
+		//
+		if(parent.isSimplifiable()) {
+			Element child = parent.getChildren().get(0);
+			parent.text(child.getText());
+			// if the parent's color is not white and the child's color is white, then keep
+			// using the parent's color.
+			if(parent.getColor() != ChatColor.WHITE && child.getColor() == ChatColor.WHITE) {
+				parent.color(parent.getColor());
+			} else {
+				parent.color(child.getColor());
+			}
+			parent.style(child.getStyles());
+			parent.click(child.getClickEvent());
+			parent.hover(child.getHoverEvent());
+			parent.detachAll();
+			parent.attach(child.getChildren());
+		}
+
+		// if the parent has only formats and the first child is plain, then
+		// set the parent's text to the first child's text, then detach it.
+		//
+		if(parent.isOnlyFormats() && parent.getChildren().size() > 0) {
+			Element child = parent.getChildren().get(0);
+			if(child.isPlain()) {
+				parent.text(child.getText());
+				parent.detach(child);
+			}
+		}
+
+		return parent;
 	}
 
-	public static String colorize(String message)
-	{
+	/**
+	 * Shortcut method to {@code TextFont.getWidth(string)}.
+	 *
+	 * @param string
+	 * @return
+	 */
+	public static int getWidth(String string, ChatFont font) {
+		return font.getWidth(string);
+	}
+
+	public static int getWidth(String string) {
+		return getWidth(string, vanillaFont);
+	}
+
+	public static String colorize(String message) {
 		return colorize(message, '&');
 	}
 
-	public static String colorize(String message, char replace)
-	{
+	public static String colorize(String message, char replace) {
 		return message.replace(replace, '\u00A7');
 	}
 
-	/**
-	 * Converts a ChatBuilder object to Minecraft legacy chat string.
-	 * Obviously, hover and click events won't carry over.
-	 *
-	 * @param elements The ChatBuilder object to convert
-	 * @return The legacy chat string.
-	 */
-	public static String toLegacyString(ChatElement... elements)
-	{
-		StringBuilder sb = new StringBuilder();
-
-		for (ChatElement e : elements)
-		{
-			sb.append(toLegacyString(e));
-		}
-
-		return sb.toString();
+	public static Element join(Element[] texts, Element glue) {
+		return join(texts, glue, glue);
 	}
 
-	public static String toLegacyString(ChatElement element)
-	{
-		StringBuilder sb = new StringBuilder();
+	public static Element join(Element[] texts, Element glue, Element lastGlue) {
+		Element el = new ChatElement();
 
-		if (element.getColor() != null)
+		if (texts.length > 0)
 		{
-			sb.append(element.getColor());
-		}
-		for (CFFormat format : element.getFormats())
-		{
-			sb.append(format);
-		}
-		if (!element.getText().equals(""))
-		{
-			sb.append(element.getText());
-		}
-
-		for (ChatElement extra : element.getExtraElements())
-		{
-			if (extra.getColor() != null)
+			el.attach(texts[0]);
+			for (int i = 1; i < texts.length; i++)
 			{
-				sb.append(extra.getColor());
-			}
-			for (CFFormat format : extra.getFormats())
-			{
-				sb.append(format);
-			}
-			if (!extra.getText().equals(""))
-			{
-				sb.append(extra.getText());
-			}
-		}
-
-		return sb.toString();
-	}
-
-	public static ChatElement fromLegacy(String message)
-	{
-		return fromLegacy(message, '\u00A7');
-	}
-
-	/**
-	 * Converts Minecraft legacy chat to a ChatBuilder object.
-	 *
-	 * @param message The legacy chat string to convert
-	 * @return A new ChatBuilder object.
-	 */
-
-	public static ChatElement fromLegacy(String message, char colorCode)
-	{
-
-		ChatElement cb = new ChatElement();
-
-		StringBuilder text = new StringBuilder();
-		boolean nextIsColorCode = false;
-		CFColor lastColor = CFColor.WHITE;
-		List<CFFormat> formats = new ArrayList<>();
-
-		for (char c : message.toCharArray())
-		{
-
-			if (c == colorCode)
-			{
-				nextIsColorCode = true;
-				continue;
-			}
-
-			if (nextIsColorCode)
-			{
-				nextIsColorCode = false;
-				CFColor color = CFColor.fromChar(c);
-				CFFormat format = CFFormat.fromChar(c);
-				if (color != null && format == null)
-				{ //This is a color
-					//Push new element
-					if (!text.toString().equals(""))
-					{
-						cb.append(text.toString()).color(lastColor).format(formats.toArray(new CFFormat[formats.size()]));
-					}
-					//Reset variables
-					text = new StringBuilder();
-					lastColor = color;
-					formats = new ArrayList<>();
-				} else if (color == null && format != null)
-				{ //This is a format
-					formats.add(format);
-				}
-				continue;
-			}
-
-			text.append(c);
-
-		}
-
-		cb.append(text.toString()).color(lastColor).format(formats.toArray(new CFFormat[formats.size()]));
-
-		return cb;
-	}
-
-	public static ChatElement join(ChatElement builder, ChatElement glue)
-	{
-		return join(builder, glue, glue);
-	}
-
-	public static ChatElement join(ChatElement builder, ChatElement glue, ChatElement lastGlue)
-	{
-		ChatElement newBuilder = new ChatElement();
-		List<ChatElement> elements = builder.getExtraElements();
-		if (elements.size() > 0)
-		{
-			newBuilder.append(elements.get(0));
-			for (int i = 1; i < elements.size(); i++)
-			{
-				if (i == (elements.size() - 1))
+				if (i == (texts.length - 1))
 				{
-					newBuilder.append(lastGlue);
+					el.attach(lastGlue);
 				} else
 				{
-					newBuilder.append(glue);
+					el.attach(glue);
 				}
-				newBuilder.append(elements.get(i));
+				el.attach(texts[i]);
 			}
 		}
 
-		return newBuilder;
+		return el;
 	}
 
 	/*
@@ -250,38 +251,12 @@ public class LiquidF
 		}
 	};
 
-	private static BlockRenderer<ChatElement> BLOCK_RENDERER_CHAT = new BlockRenderer<ChatElement>()
+	private static BlockRenderer<Element> BLOCK_RENDERER_CHAT = new BlockRenderer<Element>()
 	{
 		@Override
-		public ChatElement render(String left, String text, String right)
+		public Element render(String left, String text, String right)
 		{
-			return new ChatElement().
-					appendif(!left.equals(""), left).
-					append(text).
-					appendif(!right.equals(""), right);
-		}
-	};
-
-	private static interface FillerRenderer<T>
-	{
-		public T render(String filler);
-	}
-
-	private static FillerRenderer<String> FILLER_RENDERER_STRING = new FillerRenderer<String>()
-	{
-		@Override
-		public String render(String filler)
-		{
-			return filler;
-		}
-	};
-
-	private static FillerRenderer<ChatElement> FILLER_RENDERER_CHAT = new FillerRenderer<ChatElement>()
-	{
-		@Override
-		public ChatElement render(String filler)
-		{
-			return new ChatElement(filler);
+			return new SimpleChatElement(left + text + right);
 		}
 	};
 
@@ -296,158 +271,69 @@ public class LiquidF
 	 * @param renderer   The interface that this method will use to build the return object.
 	 * @return The setText fitted to toWidth.
 	 */
-	static private <T> T block(String text, int toWidth, CFAlignment alignment, char fillerChar, boolean precise, BlockRenderer<T> renderer)
-	{
-		String cutText = cut(text, toWidth)[0] + CFFormat.RESET;
-
-		//The total width (in pixels) needed to fill
-		final int totalFillerWidth = toWidth - width(cutText);
-
-		int lFillerWidth, rFillerWidth;
-
-		switch (alignment)
-		{
-			case LEFT:
-			default:
-				lFillerWidth = 0;
-				rFillerWidth = totalFillerWidth;
-				break;
-			case RIGHT:
-				lFillerWidth = totalFillerWidth;
-				rFillerWidth = 0;
-				break;
-			case CENTER: //Cuts the total width to fill in half
-				lFillerWidth = (int) Math.floor(totalFillerWidth / 2.0);
-				rFillerWidth = (int) Math.ceil(totalFillerWidth / 2.0);
-				break;
-			case CENTER_CEIL:
-				lFillerWidth = (int) Math.ceil(totalFillerWidth / 2.0);
-				rFillerWidth = (int) Math.floor(totalFillerWidth / 2.0);
-				break;
-		}
-
-		return renderer.render(filler(lFillerWidth, precise, fillerChar, FILLER_RENDERER_STRING), cutText, filler(rFillerWidth, precise, fillerChar, FILLER_RENDERER_STRING));
-	}
-
-	static public String blockString(String text, int toWidth, CFAlignment alignment)
-	{
-		return blockString(text, toWidth, alignment, ' ', true);
-	}
-
-	static public String blockString(String text, int toWidth, CFAlignment alignment, char fillerChar, boolean precise)
-	{
-		return block(text, toWidth, alignment, fillerChar, precise, BLOCK_RENDERER_STRING);
-	}
-
-	static public ChatElement block(String text, int toWidth, CFAlignment alignment)
-	{
-		return block(text, toWidth, alignment, ' ', true);
-	}
-
-	static public ChatElement block(String text, int toWidth, CFAlignment alignment, char fillerChar, boolean precise)
-	{
-		return block(text, toWidth, alignment, fillerChar, precise, BLOCK_RENDERER_CHAT);
-	}
-
-	static public ChatElement block(ChatElement element, int toWidth, CFAlignment alignment)
-	{
-		return block(element, toWidth, alignment, ' ', true);
-	}
-
-	static public ChatElement block(ChatElement element, int toWidth, CFAlignment alignment, char fillerChar, boolean precise)
-	{
-		return block(toLegacyString(element), toWidth, alignment, fillerChar, precise, BLOCK_RENDERER_CHAT);
-	}
-
-	final static CFColor FILLER_COLOR = CFColor.DARK_GRAY;
-
-	public final static String FILLER_2PX_RAW = FILLER_COLOR + "\u2019";
-	public final static ChatElement FILLER_2PX = new ChatElement(FILLER_2PX_RAW);
-
-	/**
-	 * Creates a filler for use in Minecraft's chat. It's a more raw function used to align setText.
-	 *
-	 * @param width        The width of the filler (in pixels)
-	 * @param precise      Whether or not to use filler characters to perfectly match the width (this will create artifacts in the filler)
-	 * @param customFiller The character to use primarily during the filler (should be a space most of the time)
-	 * @return The filler as a string.
-	 */
-	static public <T> T filler(int width, boolean precise, char customFiller, FillerRenderer<T> renderer)
-	{
-		if (width < 0) throw new IllegalArgumentException("Filler width cannot be less than 0!");
-		if (width == 0) return renderer.render("");
-		if (width == 1) throw new IllegalArgumentException("A filler cannot be a pixel wide");
-		if (width == 2) return renderer.render(FILLER_2PX_RAW);
-
-		final int customFillerWidth = width(customFiller);
-		StringBuilder filler = new StringBuilder();
-
-		while (width > customFillerWidth + 1)
-		{
-			filler.append(customFiller);
-			width -= customFillerWidth;
-		}
-
-		switch (width)
-		{
-			case 6:
-				if (customFillerWidth == 6)
-				{
-					filler.append(customFiller);
-					break;
-				}
-			case 5:
-				if (customFillerWidth == 5)
-				{
-					filler.append(customFiller);
-					break;
-				}
-				// Use a bolded space (4px + 1px)
-				filler.append(CFFormat.BOLD).append(' ').append(CFFormat.RESET);
-				break;
-			case 4:
-				if (customFillerWidth == 4)
-				{
-					filler.append(customFiller);
-					break;
-				}
-				// Use a space (4px)
-				filler.append(" ");
-				break;
-			case 3:
-				if (customFillerWidth == 3)
-				{
-					filler.append(customFiller);
-					break;
-				}
-				if (!precise) break;
-				// Use the bolded 2px filler (2px + 1px)
-				filler.append(FILLER_COLOR).append(CFFormat.BOLD).append(FILLER_2PX_RAW).append(CFFormat.RESET);
-				break;
-			case 2:
-				if (customFillerWidth == 2)
-				{
-					filler.append(customFiller);
-					break;
-				}
-				if (!precise) break;
-				// Use the 2px filler
-				filler.append(FILLER_COLOR).append(FILLER_2PX_RAW).append(CFFormat.RESET);
-				break;
-		}
-
-		return renderer.render(filler.toString());
-	}
-
-	static public ChatElement filler(int width)
-	{
-		return filler(width, true, ' ');
-	}
-
-	static public ChatElement filler(int width, boolean precise, char emptyFiller)
-	{
-		return filler(width, precise, emptyFiller, FILLER_RENDERER_CHAT);
-	}
+	//static private <T> T block(String text, int toWidth, TextAlignment alignment, char fillerChar, boolean precise, BlockRenderer<T> renderer)
+	//{
+	//	String cutText = cut(text, toWidth)[0] + TextStyle.RESET;
+	//
+	//	//The total width (in pixels) needed to fill
+	//	final int totalFillerWidth = toWidth - width(cutText);
+	//
+	//	int lFillerWidth, rFillerWidth;
+	//
+	//	switch (alignment)
+	//	{
+	//		case LEFT:
+	//		default:
+	//			lFillerWidth = 0;
+	//			rFillerWidth = totalFillerWidth;
+	//			break;
+	//		case RIGHT:
+	//			lFillerWidth = totalFillerWidth;
+	//			rFillerWidth = 0;
+	//			break;
+	//		case CENTER: //Cuts the total width to fill in half
+	//			lFillerWidth = (int) Math.floor(totalFillerWidth / 2.0);
+	//			rFillerWidth = (int) Math.ceil(totalFillerWidth / 2.0);
+	//			break;
+	//		case CENTER_CEIL:
+	//			lFillerWidth = (int) Math.ceil(totalFillerWidth / 2.0);
+	//			rFillerWidth = (int) Math.floor(totalFillerWidth / 2.0);
+	//			break;
+	//	}
+	//
+	//	return renderer.render(filler(lFillerWidth, precise, fillerChar, FILLER_RENDERER_STRING), cutText, filler(rFillerWidth, precise, fillerChar, FILLER_RENDERER_STRING));
+	//}
+	//
+	//static public String blockString(String text, int toWidth, TextAlignment alignment)
+	//{
+	//	return blockString(text, toWidth, alignment, ' ', true);
+	//}
+	//
+	//static public String blockString(String text, int toWidth, TextAlignment alignment, char fillerChar, boolean precise)
+	//{
+	//	return block(text, toWidth, alignment, fillerChar, precise, BLOCK_RENDERER_STRING);
+	//}
+	//
+	//static public Text block(String text, int toWidth, TextAlignment alignment)
+	//{
+	//	return block(text, toWidth, alignment, ' ', true);
+	//}
+	//
+	//static public Text block(String text, int toWidth, TextAlignment alignment, char fillerChar, boolean precise)
+	//{
+	//	return block(text, toWidth, alignment, fillerChar, precise, BLOCK_RENDERER_CHAT);
+	//}
+	//
+	//static public Text block(Text element, int toWidth, TextAlignment alignment)
+	//{
+	//	return block(element, toWidth, alignment, ' ', true);
+	//}
+	//
+	//static public Text block(Text element, int toWidth, TextAlignment alignment, char fillerChar, boolean precise)
+	//{
+	//	String rendered = CFLegacyRenderer.INSTANCE.render(element);
+	//	return block(rendered, toWidth, alignment, fillerChar, precise, BLOCK_RENDERER_CHAT);
+	//}
 
 	static public String[] cut(String text, int width)
 	{
@@ -467,10 +353,10 @@ public class LiquidF
 		int start = 0;
 		int end = text.length();
 
-		while (width(text.substring(start, end)) > width)
+		while (getWidth(text.substring(start, end)) > width)
 		{
 			end--;
-			if (wrap > 0 && width(text.substring(start, end)) <= width)
+			if (wrap > 0 && getWidth(text.substring(start, end)) <= width)
 			{
 				int lookbehind = 0; //Amount of characters looked at behind the end index
 				int temp_end = end; //Temporary end marker
@@ -493,77 +379,77 @@ public class LiquidF
 		return new String[]{text.substring(start, end), text.substring(end)};
 	}
 
-	public static String toJSONString(ChatElement... elements)
-	{
-		Map<Object, Object> json = new HashMap<>();
-		json.put("text", "");
-		json.put("extra", Arrays.asList(elements));
-		return JSONValue.toJSONString(json);
-	}
-
-	public static String toJSONString(List<ChatElement> elements)
-	{
-		Map<Object, Object> json = new HashMap<>();
-		json.put("text", "");
-		json.put("extra", elements);
-		return JSONValue.toJSONString(json);
-	}
-
-	@SuppressWarnings({"unchecked", "rawtypes"})
-	public static String toJSONString(ChatElement element)
-	{
-		String text = element.getText();
-		boolean translate = element.getTranslate();
-		List<String> with = element.getTranslateWith();
-
-		Map<String, Object> json = new HashMap();
-
-		if (translate)
-		{
-			json.put("translate", text);
-			if (with.size() > 0)
-				json.put("with", with);
-		} else
-		{
-			json.put("text", text);
-		}
-
-		if (element.isPlain())
-		{
-			return JSONValue.toJSONString(json);
-		}
-
-		if (element.getClick() != null)
-		{
-			Map click = new HashMap();
-			click.put("action", element.getClick().name().toLowerCase());
-			click.put("value", element.getClickValue());
-			json.put("clickEvent", click);
-		}
-
-		if (element.getHover() != null)
-		{
-			Map hover = new HashMap();
-			hover.put("action", element.getHover().name().toLowerCase());
-			hover.put("value", element.getHoverValue());
-			json.put("hoverEvent", hover);
-		}
-
-		for (CFFormat format : element.getFormats())
-		{
-			json.put(format.name().toLowerCase(), true);
-		}
-
-		if (element.getColor() != null)
-		{
-			json.put("color", element.getColor().name().toLowerCase());
-		}
-
-		if (element.getExtraElements().size() > 0)
-		{
-			json.put("extra", element.getSimpleExtraElements());
-		}
-
-		return JSONValue.toJSONString(json);
-	}
+	//public static String toJSONString(Text... elements)
+	//{
+	//	Map<Object, Object> json = new HashMap<>();
+	//	json.put("text", "");
+	//	json.put("extra", Arrays.asList(elements));
+	//	return JSONValue.toJSONString(json);
+	//}
+	//
+	//public static String toJSONString(List<Text> elements)
+	//{
+	//	Map<Object, Object> json = new HashMap<>();
+	//	json.put("text", "");
+	//	json.put("extra", elements);
+	//	return JSONValue.toJSONString(json);
+	//}
+	//
+	//@SuppressWarnings({"unchecked", "rawtypes"})
+	//public static String toJSONString(Text element)
+	//{
+	//	String text = element.getText();
+	//	boolean translate = element.getTranslate();
+	//	List<String> with = element.getTranslateWith();
+	//
+	//	Map<String, Object> json = new HashMap();
+	//
+	//	if (translate)
+	//	{
+	//		json.put("translate", text);
+	//		if (with.size() > 0)
+	//			json.put("with", with);
+	//	} else
+	//	{
+	//		json.put("text", text);
+	//	}
+	//
+	//	if (element.isPlain())
+	//	{
+	//		return JSONValue.toJSONString(json);
+	//	}
+	//
+	//	if (element.getClick() != null)
+	//	{
+	//		Map click = new HashMap();
+	//		click.put("action", element.getClick().name().toLowerCase());
+	//		click.put("value", element.getClickValue());
+	//		json.put("clickEvent", click);
+	//	}
+	//
+	//	if (element.getHover() != null)
+	//	{
+	//		Map hover = new HashMap();
+	//		hover.put("action", element.getHover().name().toLowerCase());
+	//		hover.put("value", element.getHoverValue());
+	//		json.put("hoverEvent", hover);
+	//	}
+	//
+	//	for (TextStyle format : element.getFormats())
+	//	{
+	//		json.put(format.name().toLowerCase(), true);
+	//	}
+	//
+	//	if (element.getColor() != null)
+	//	{
+	//		json.put("color", element.getColor().name().toLowerCase());
+	//	}
+	//
+	//	if (element.getExtraElements().size() > 0)
+	//	{
+	//		json.put("extra", element.getSimpleExtraElements());
+	//	}
+	//
+	//	return JSONValue.toJSONString(json);
+	//}
 }

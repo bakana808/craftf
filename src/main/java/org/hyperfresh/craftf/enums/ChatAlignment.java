@@ -3,9 +3,7 @@ package org.hyperfresh.craftf.enums;
 /**
  * @author octopod
  */
-public enum CFHoverEvent
+public enum ChatAlignment
 {
-	SHOW_TEXT,
-	SHOW_ACHIEVEMENT,
-	SHOW_ITEM
+	LEFT, RIGHT, CENTER, CENTER_CEIL
 }

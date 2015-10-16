@@ -5,7 +5,7 @@ package org.hyperfresh.craftf;
  *
  * @author octopod
  */
-public interface CFFontInfo
+public interface ChatFont
 {
 	/**
 	 * Gets the width, in pixels, of a character using this font.
@@ -13,7 +13,9 @@ public interface CFFontInfo
 	 * @param c the character
 	 * @return the pixel width of this character
 	 */
-	public int getWidth(char c);
+	int getWidth(char c);
+
+	int getWidth(String string);
 
 	/**
 	 * The amount of space, in pixels, that a full tab will take.
@@ -21,5 +23,5 @@ public interface CFFontInfo
 	 *
 	 * @return the width of a tab
 	 */
-	public int getTabWidth();
+	int getTabWidth();
 }

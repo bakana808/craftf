@@ -3,7 +3,7 @@ package org.hyperfresh.craftf.enums;
 /**
  * @author octopod
  */
-public enum CFClickEvent
+public enum ClickEvent
 {
 	OPEN_URL,
 	OPEN_FILE,

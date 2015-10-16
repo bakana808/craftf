@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @author octopod
  */
-public enum CFColor
+public enum ChatColor
 {
 	BLACK('0'),
 	DARK_BLUE('1'),
@@ -25,16 +25,16 @@ public enum CFColor
 	YELLOW('e'),
 	WHITE('f');
 
-	Character character = null;
+	char character;
 
-	private static Map<Character, CFColor> map = new HashMap<>();
+	private static Map<Character, ChatColor> map = new HashMap<>();
 
 	static
 	{
-		for (CFColor c : values()) map.put(c.character, c);
+		for (ChatColor c : values()) map.put(c.character, c);
 	}
 
-	private CFColor(char c)
+	ChatColor(char c)
 	{
 		character = c;
 	}
@@ -44,7 +44,7 @@ public enum CFColor
 		return character;
 	}
 
-	static public CFColor fromChar(char c)
+	static public ChatColor fromChar(char c)
 	{
 		return map.get(c);
 	}

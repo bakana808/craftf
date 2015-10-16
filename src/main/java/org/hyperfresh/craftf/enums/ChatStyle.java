@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @author octopod
  */
-public enum CFFormat
+public enum ChatStyle
 {
 	OBFUSCATED('k'),
 	BOLD('l'),
@@ -15,18 +15,18 @@ public enum CFFormat
 	ITALIC('o'),
 	RESET('r');
 
-	public static CFFormat[] NO_FORMATS = new CFFormat[0];
+	public static ChatStyle[] NORMAL = new ChatStyle[0];
 
 	Character character = null;
 
-	private static Map<Character, CFFormat> map = new HashMap<>();
+	private static Map<Character, ChatStyle> map = new HashMap<>();
 
 	static
 	{
-		for (CFFormat f : values()) map.put(f.character, f);
+		for (ChatStyle f : values()) map.put(f.character, f);
 	}
 
-	private CFFormat(char c)
+	private ChatStyle(char c)
 	{
 		character = c;
 	}
@@ -36,7 +36,7 @@ public enum CFFormat
 		return character;
 	}
 
-	static public CFFormat fromChar(char c)
+	static public ChatStyle fromChar(char c)
 	{
 		return map.get(c);
 	}

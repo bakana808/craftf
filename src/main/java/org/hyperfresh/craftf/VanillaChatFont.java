@@ -3,13 +3,8 @@ package org.hyperfresh.craftf;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CFVanillaFontInfo implements CFFontInfo
+public class VanillaChatFont extends AbstractChatFont
 {
-	/**
-	 * The current instance of CFVanillaFontInfo.
-	 */
-	final public static CFVanillaFontInfo INFO = new CFVanillaFontInfo();
-
 	/**
 	 * Map of all specific character widths other than the default.
 	 */
@@ -23,8 +18,7 @@ public class CFVanillaFontInfo implements CFFontInfo
 	/**
 	 * Static map filler.
 	 */
-	static
-	{
+	static {
 		widths.put('*', 5);
 		widths.put('>', 5);
 		widths.put('<', 5);
@@ -52,23 +46,17 @@ public class CFVanillaFontInfo implements CFFontInfo
 		widths.put('i', 2);
 	}
 
-	private CFVanillaFontInfo() { }
-
 	@Override
-	public int getWidth(char c)
-	{
-		if (widths.containsKey(c))
-		{
+	public int getWidth(char c) {
+		if (widths.containsKey(c)) {
 			return widths.get(c);
-		} else
-		{
+		} else {
 			return default_width;
 		}
 	}
 
 	@Override
-	public int getTabWidth()
-	{
+	public int getTabWidth() {
 		return 8;
 	}
 }
