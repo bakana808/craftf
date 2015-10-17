@@ -10,26 +10,20 @@ import java.util.List;
 public abstract class AbstractElement implements Element {
 
 	@Override
-	public boolean isEmpty() {
-		return getText().equals("") && getChildren().isEmpty();
-	}
-
-	@Override
-	public boolean isSimplifiable() {
-		return getText().equals("") && getChildren().size() == 1;
-	}
-
-	@Override
 	public boolean isPlain() {
 		return getColor() == ChatColor.WHITE &&
-			getStyles().isEmpty() && getChildren().isEmpty() &&
+			getStyles().isEmpty() &&
 			getClickEvent() == null && getHoverEvent() == null;
 	}
 
 	@Override
+	public boolean isEmpty() {
+		return getText().equals("") && isPlain();
+	}
+
+	@Override
 	public boolean isOnlyFormats() {
-		return getText().equals("") &&
-			(getColor() != ChatColor.WHITE || getStyles().size() > 0);
+		return getText().equals("") && !isPlain();
 	}
 
 	public String toString() {

@@ -13,33 +13,10 @@ public interface Element {
 	/**
 	 * Returns true if:
 	 * <ul>
-	 *     <li>{@code getText()} returns {@code ""}</li>
-	 *     <li>{@code getChildren()} returns an empty list</li>
-	 * </ul>
-	 * This means the TextElement represents nothing.
-	 * @return
-	 */
-	boolean isEmpty();
-
-	/**
-	 * Returns true if:
-	 * <ul>
-	 *     <li>{@code getText()} returns {@code ""}</li>
-	 *     <li>There is only one element in {@code getChildren()}</li>
-	 * </ul>
-	 * This means that this TextElement can be replaced with the one child.
-	 * @return
-	 */
-	boolean isSimplifiable();
-
-	/**
-	 * Returns true if:
-	 * <ul>
 	 *     <li>{@code getColor()} returns {@code TextColor.WHITE}</li>
 	 *     <li>{@code getStyles()} returns an empty set</li>
 	 *     <li>{@code getClickEvent()} returns {@code null}</li>
 	 *     <li>{@code getHoverEvent()} returns {@code null}</li>
-	 *     <li>{@code getChildren()} returns an empty list</li>
 	 * </ul>
 	 * This means that this TextElement represents text that is not formatted at all.
 	 * @return
@@ -49,13 +26,22 @@ public interface Element {
 	/**
 	 * Returns true if:
 	 * <ul>
-	 *     <li>{@code getText()} returns an empty string</li>
-	 *     <li>{@code getColor()} returns a ChatColor other than {@code ChatColor.WHITE}</li>
-	 *     <p>OR</p>
-	 *     <li>{@code getStyles()} is not empty</li>
+	 *     <li>{@code getText()} returns {@code ""}</li>
+	 *     <li>{@code isPlain()} returns {@code true}</li>
 	 * </ul>
-	 * This means that this TextElement represents text that has
-	 * no text but has formats placed on it.
+	 * This means the root ChatElement represents nothing.
+	 * @return
+	 */
+	boolean isEmpty();
+
+	/**
+	 * Returns true if:
+	 * <ul>
+	 *     <li>{@code getText()} returns {@code ""}</li>
+	 *     <li>{@code isPlain()} returns {@code false}</li>
+	 * </ul>
+	 * This means the root ChatElement represents an empty string
+	 * with formats placed on it.
 	 * @return
 	 */
 	boolean isOnlyFormats();

@@ -7,6 +7,7 @@ import org.hyperfresh.craftf.renderer.JSONRenderer;
 import org.hyperfresh.craftf.renderer.LegacyRenderer;
 import org.hyperfresh.craftf.renderer.Renderer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -107,6 +108,24 @@ public class CraftF {
 		return text;
 	}
 
+	public static Element merge(Element element, Element other) {
+		Element el = new ChatElement(element);
+		el.text(el.getText() + other.getText());
+		// if the parent's color is not white and the child's color is white, then keep
+		// using the parent's color.
+		if(el.getColor() != ChatColor.WHITE && other.getColor() == ChatColor.WHITE) {
+			el.color(el.getColor());
+		} else {
+			el.color(other.getColor());
+		}
+		el.style(other.getStyles());
+		el.click(other.getClickEvent());
+		el.hover(other.getHoverEvent());
+		el.detachAll();
+		el.attach(other.getChildren());
+		return el;
+	}
+
 	public static Element simplify(Element original) {
 
 		Element parent = new ChatElement(original);
@@ -117,15 +136,16 @@ public class CraftF {
 		//
 		for(int i = 0; i < children.size(); i++) {
 			Element child = children.get(i);
-			if(child.isEmpty()) {
+			if(child.isEmpty() && child.getChildren().isEmpty()) {
 				parent.detach(child);
 			} else {
 				children.set(i, simplify(child));
 			}
 		}
 
-		// if the parent has no text and has only one child,
-		// copy all properties from the child onto the parent, then detach it.
+		// if the parent has no text and has more than one child,
+		// copy all properties from the first child onto the parent, then detach it.
+		// the rest of the parent's children will be attached afterwards.
 		// example:
 		//
 		// {"text":"", "extra":[{"text":"extra", "color":"green"}]}
@@ -134,21 +154,16 @@ public class CraftF {
 		//
 		// {"text":"extra", "color":"green"}
 		//
-		if(parent.isSimplifiable()) {
-			Element child = parent.getChildren().get(0);
-			parent.text(child.getText());
-			// if the parent's color is not white and the child's color is white, then keep
-			// using the parent's color.
-			if(parent.getColor() != ChatColor.WHITE && child.getColor() == ChatColor.WHITE) {
-				parent.color(parent.getColor());
-			} else {
-				parent.color(child.getColor());
-			}
-			parent.style(child.getStyles());
-			parent.click(child.getClickEvent());
-			parent.hover(child.getHoverEvent());
-			parent.detachAll();
-			parent.attach(child.getChildren());
+		if(parent.getText().equals("") && children.size() == 1) {
+			Element child = children.get(0);
+			parent = merge(parent, child);
+		}
+
+		if(parent.isPlain() && children.size() > 0) {
+			List<Element> childrenCopy = new ArrayList<>(children);
+			Element child = childrenCopy.remove(0);
+			parent = merge(parent, child);
+			parent.attach(childrenCopy);
 		}
 
 		// if the parent has only formats and the first child is plain, then

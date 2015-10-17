@@ -22,7 +22,7 @@ public class JSONRenderer implements Renderer<String> {
 		//	return render(el.getChildren().get(0));
 		//}
 
-		if(el.isPlain()) {
+		if(el.isPlain() && el.getChildren().isEmpty()) {
 			return sb.append('"').append(text).append('"').toString();
 		}
 
