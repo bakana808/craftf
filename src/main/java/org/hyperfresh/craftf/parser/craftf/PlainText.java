@@ -10,7 +10,7 @@ public class PlainText implements ParserExtension {
 
 	@Override
 	public String getRegex() {
-		return "^([^&]+)";
+		return "(?<=^|&r)([^&]+)";
 	}
 
 	@Override

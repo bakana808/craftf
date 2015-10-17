@@ -22,7 +22,7 @@ public class MarkupParser implements Parser<String> {
 	private static final char colorCode = '&';
 
 	private final ParserExtension[] extensions = new ParserExtension[] {
-		new PlainText(), new ColoredText(), new StyledText()
+		new ColoredText(), new StyledText(), new PlainText()
 	};
 
 	/**
@@ -34,7 +34,7 @@ public class MarkupParser implements Parser<String> {
 	 */
 	private MatchResult nextMatch(Scanner scanner, String pattern) {
 		try {
-			scanner.findWithinHorizon(pattern, 0);
+			scanner.findInLine(pattern);
 			return scanner.match();
 		} catch (IllegalStateException e) {
 			return null;
@@ -43,16 +43,19 @@ public class MarkupParser implements Parser<String> {
 	public void parse(Element parent, String input) {
 
 		Scanner src = new Scanner(input);
+		int pos = 0;
 
 		loop: while(src.hasNext()) {
 			for(ParserExtension ext: extensions) {
 				MatchResult match = nextMatch(src, ext.getRegex());
 				if(match != null) {
+					pos = match.start();
+					//System.out.println("\"" + input.substring(pos) + "\": Using " + ext.getClass().getSimpleName() + " @ \"" + match.group() + "\"");
 					ext.parse(this, parent, match);
 					continue loop;
 				}
 			}
-			System.out.println("No parsers handled the Scanner.");
+			System.out.println("\"" + input.substring(pos) + "\":  No parsers handled the Scanner");
 			break;
 		}
 	}
@@ -64,9 +67,9 @@ public class MarkupParser implements Parser<String> {
 
 		parse(root, input);
 
+		//System.out.println("ORIGINAL: \n" + root);
 		root = CraftF.simplify(root);
-
-		System.out.println("ELEMENT: \n" + root);
+		//System.out.println("ELEMENT: \n" + root);
 
 		return root;
 
