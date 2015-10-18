@@ -9,7 +9,10 @@ import org.hyperfresh.craftf.parser.craftf.PlainText;
 import org.hyperfresh.craftf.parser.craftf.StyledText;
 
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -21,7 +24,7 @@ public class MarkupParser implements Parser<String> {
 
 	private static final char colorCode = '&';
 
-	private final ParserExtension[] extensions = new ParserExtension[] {
+	private static final ParserExtension[] extensions = new ParserExtension[] {
 		new ColoredText(), new StyledText(), new PlainText()
 	};
 
@@ -33,31 +36,46 @@ public class MarkupParser implements Parser<String> {
 	 * @return
 	 */
 	private MatchResult nextMatch(Scanner scanner, String pattern) {
-		try {
-			scanner.findInLine(pattern);
+		if(scanner.hasNext(pattern)) {
+			scanner.findWithinHorizon(pattern, 0);
 			return scanner.match();
-		} catch (IllegalStateException e) {
+		} else {
 			return null;
 		}
 	}
+
+	private MatchResult nextMatch(String src, String regex) {
+		Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+		Matcher matcher = pattern.matcher(src);
+		if(matcher.find() && matcher.start() == 0) {
+			return matcher.toMatchResult();
+		} else {
+			return null;
+		}
+	}
+
 	public void parse(Element parent, String input) {
 
-		Scanner src = new Scanner(input);
-		int pos = 0;
+		//Scanner src = new Scanner(input);
+		AtomicInteger pointer = new AtomicInteger(0);
 
-		loop: while(src.hasNext()) {
+		loop: while(pointer.get() < input.length()) {
+			String src = null;
 			for(ParserExtension ext: extensions) {
-				MatchResult match = nextMatch(src, ext.getRegex());
-				if(match != null) {
-					pos = match.start();
-					//System.out.println("\"" + input.substring(pos) + "\": Using " + ext.getClass().getSimpleName() + " @ \"" + match.group() + "\"");
-					ext.parse(this, parent, match);
-					continue loop;
-				}
+
+				MatchResult match = nextMatch(src = input.substring(pointer.get()), ext.getRegex());
+
+				//System.out.println("\"" + escaped + "\": attempting " + ext.getClass().getSimpleName());
+				if(match == null) continue;
+				//System.out.println("\"" + escaped + "\": matched \"" + CraftF.escapeText(match.group()) + "\" @ " + pointer);
+				ext.parse(this, parent, match);
+				pointer.addAndGet(match.end());
+				continue loop;
 			}
-			System.out.println("\"" + input.substring(pos) + "\":  No parsers handled the Scanner");
+			System.out.println("\"" + CraftF.escapeText(src) + "\": no parsers were found @ " + pointer);
 			break;
 		}
+		//src.close();
 	}
 
 	@Override
