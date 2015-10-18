@@ -34,7 +34,7 @@ public abstract class AbstractElement implements Element {
 		String ind = new String(new char[indent]).replace("\0", "    ");
 
 		StringBuilder sb = new StringBuilder();
-		sb.append(ind).append("text: \"").append(CraftF.fixText(getText())).append("\"\n");
+		sb.append(ind).append("text: \"").append(CraftF.escapeText(getText())).append("\"\n");
 		sb.append(ind).append("color: ").append(getColor().name()).append("\n");
 		sb.append(ind).append("styles: " + getStyles() + "\n");
 		sb.append(ind).append("children: [");
