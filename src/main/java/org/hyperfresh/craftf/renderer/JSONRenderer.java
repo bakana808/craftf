@@ -15,7 +15,7 @@ public class JSONRenderer implements Renderer<String> {
 
 		StringBuilder sb = new StringBuilder();
 
-		String text = CraftF.fixText(el.getText());
+		String text = CraftF.escapeText(el.getText());
 
 		//if(el.getText().equals("") && el.getChildren().size() == 1) {
 		//	// empty parent Text object, so just render the one child
