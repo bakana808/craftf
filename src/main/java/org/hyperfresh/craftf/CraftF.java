@@ -103,7 +103,8 @@ public class CraftF {
 	// ====================================================
 	// TODO: review old code below
 
-	public static String fixText(String text) {
+	public static String escapeText(String text) {
+		if(text == null) return null;
 		text = text.replaceAll("(\\n|\\r)", "\\\\n");
 		return text;
 	}
@@ -157,6 +158,7 @@ public class CraftF {
 		if(parent.getText().equals("") && children.size() == 1) {
 			Element child = children.get(0);
 			parent = merge(parent, child);
+			children = parent.getChildren();
 		}
 
 		if(parent.isPlain() && children.size() > 0) {
@@ -164,6 +166,7 @@ public class CraftF {
 			Element child = childrenCopy.remove(0);
 			parent = merge(parent, child);
 			parent.attach(childrenCopy);
+			children = parent.getChildren();
 		}
 
 		// if the parent has only formats and the first child is plain, then
