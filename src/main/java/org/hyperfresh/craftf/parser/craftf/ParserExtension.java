@@ -11,5 +11,5 @@ public interface ParserExtension {
 
 	String getRegex();
 
-	void parse(MarkupParser parser, Element root, final MatchResult match);
+	void parse(MarkupParser parser, Element root, MatchResult match);
 }
