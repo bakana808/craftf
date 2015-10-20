@@ -1,4 +1,4 @@
-CraftF [ ![Build Status][build-badge] ][build] [ ![Downloads][dl-badge] ][dl] [ ![Join IRC][irc-badge] ][irc]
+CraftF [ ![Build Status][build-badge] ][build] [ ![Downloads][dl-badge] ][dl] [ ![Join Slack][slack-badge] ][slack]
 ======
 ##### a markup language based off of minecraft's color code system that supports all JSON features and some extras
 
@@ -25,14 +25,14 @@ Documentation
 
 Very work-in-progress documentation [here](docs/spec.md).
 
-[build-badge]: https://img.shields.io/travis/hyperfresh/craftf.svg?style=flat-square
+[build-badge]: https://img.shields.io/travis/hyperfresh/craftf.svg
 
 [build]: https://travis-ci.org/hyperfresh/craftf
 
-[dl-badge]: https://img.shields.io/github/downloads/hyperfresh/craftf/latest/total.svg?style=flat-square
+[dl-badge]: https://img.shields.io/github/downloads/hyperfresh/craftf/latest/total.svg
 
 [dl]: https://github.com/hyperfresh/craftf/releases/latest
 
-[irc-badge]: https://img.shields.io/badge/irc-join%20chat-brightgreen.svg?style=flat-square
+[slack-badge]: https://hyperfresh-slackin.herokuapp.com/badge.svg
 
-[irc]: https://webchat.esper.net/?channels=hyperfresh
+[slack]: https://hyperfresh-slackin.herokuapp.com/
