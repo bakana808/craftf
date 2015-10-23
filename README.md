@@ -2,6 +2,8 @@ CraftF [ ![Build Status][build-badge] ][build] [ ![Downloads][dl-badge] ][dl] [ 
 ======
 ##### a markup language based off of minecraft's color code system that supports all JSON features and some extras
 
+[![Join the chat at https://gitter.im/hyperfresh/craftf](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/hyperfresh/craftf?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 CraftF allows you to easily write formatted chat messages that use JSON features.
 
 The JSON string is formatted according to this Gist: <https://gist.github.com/Dinnerbone/5631634>
